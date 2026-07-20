@@ -112,6 +112,7 @@
                 mkdir -p "$NIX_BUILD_TOP/buildroot"
                 cp -r ${buildroot}/. "$NIX_BUILD_TOP/buildroot/"
                 chmod -R u+w "$NIX_BUILD_TOP/buildroot"
+                patchShebangs "$NIX_BUILD_TOP/buildroot"
 
                 export BUILDROOT_DIR="$NIX_BUILD_TOP/buildroot"
                 export PREBUILT_DIR="$NIX_BUILD_TOP/prebuilt"
