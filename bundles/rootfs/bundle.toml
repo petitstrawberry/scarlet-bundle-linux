@@ -1,0 +1,14 @@
+# Transitional: locally deployed rootfs from ../../producer/output/.
+# Will migrate to `kind = "archive"` once v0.1.0 is released.
+
+[[layers]]
+kind = "copy"
+source = "../../producer/output/rootfs/system/linux-{arch}"
+to = "/system/linux-{arch}"
+template = true
+
+[[layers]]
+kind = "copy"
+source = "../../producer/output/rootfs/data/config/linux-{arch}"
+to = "/data/config/linux-{arch}"
+template = true
