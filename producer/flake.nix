@@ -38,6 +38,7 @@
           hostTools =
             [
               pkgs.bashInteractive
+              pkgs.cacert
               pkgs.gnumake
               pkgs.git
               pkgs.curl
@@ -104,6 +105,9 @@
               BUILDROOT_VERSION = buildrootVersion;
               ARCH = arch;
               SCARLET_BUNDLE_SKIP_HOST_CHECK = "1";
+              SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+              NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+              CURL_CA_BUNDLE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
 
               outputHashMode = "recursive";
               outputHashAlgo = "sha256";
