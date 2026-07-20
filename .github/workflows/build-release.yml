@@ -7,11 +7,6 @@ on:
         description: Release version, for example v0.1.0
         required: true
         type: string
-      architectures:
-        description: Comma-separated architectures to build
-        required: true
-        default: 'riscv64,aarch64'
-        type: string
 
 permissions:
   contents: write
@@ -25,7 +20,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: ${{ fromJSON(format('["{0}"]', replace(github.event.inputs.architectures, ',', '","'))) }}
+        arch:
+          - riscv64
+          - aarch64
 
     steps:
       - name: Check out repository
