@@ -1,4 +1,15 @@
 --- a/package/intltool/intltool.mk
 +++ b/package/intltool/intltool.mk
-@@ -12,0 +13 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
-+HOST_INTLTOOL_CONF_ENV += PERL5LIB=$(HOST_DIR)/lib/perl
+@@ -12,0 +13,12 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
++HOST_INTLTOOL_CONF_ENV += \
++	PERL5LIB=$(HOST_DIR)/lib/perl \
++	LD_LIBRARY_PATH=$(HOST_DIR)/lib
++
++define HOST_INTLTOOL_CHECK_XML_PARSER
++	$(HOST_CONFIGURE_OPTS) \
++		PERL5LIB=$(HOST_DIR)/lib/perl \
++		LD_LIBRARY_PATH=$(HOST_DIR)/lib \
++		/usr/bin/perl -MXML::Parser -e 'print "XML::Parser OK\n"'
++endef
++
++HOST_INTLTOOL_PRE_CONFIGURE_HOOKS += HOST_INTLTOOL_CHECK_XML_PARSER
