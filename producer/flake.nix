@@ -29,6 +29,7 @@
         src = buildroot;
         patches = [
           ./buildroot/patches/0001-exclude-listmount-statmount-for-musl.patch
+          ./buildroot/patches/0002-libxml-parser-perl-set-runtime-library-path.patch
         ];
       };
       mkBuildroot =

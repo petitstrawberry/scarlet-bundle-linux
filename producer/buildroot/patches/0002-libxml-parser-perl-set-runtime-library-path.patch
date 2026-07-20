@@ -1,0 +1,4 @@
+--- a/package/libxml-parser-perl/libxml-parser-perl.mk
++++ b/package/libxml-parser-perl/libxml-parser-perl.mk
+@@ -21,0 +22 @@ define HOST_LIBXML_PARSER_PERL_CONFIGURE_CMDS
++			LD_LIBRARY_PATH="$(HOST_DIR)/lib$${LD_LIBRARY_PATH:+:$${LD_LIBRARY_PATH}}" \
