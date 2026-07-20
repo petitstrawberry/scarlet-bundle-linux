@@ -1,0 +1,8 @@
+# Build artifacts (never tracked)
+/cache/
+/prebuilt/
+/output/
+
+# Editor / OS
+.DS_Store
+*.swp
