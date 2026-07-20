@@ -126,6 +126,9 @@
                   patch -p1 < "$p"
                 done
 
+                substituteInPlace support/dependencies/dependencies.sh \
+                  --replace-fail 'check_prog_host "/usr/bin/file"' 'check_prog_host "file"'
+
                 ${
                   if defconfig != null then
                     ''
