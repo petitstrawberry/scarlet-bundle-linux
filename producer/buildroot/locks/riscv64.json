@@ -1,1 +1,1054 @@
-{}
+{
+  "0.9.1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "819979c922a0be258aed133d93920bce6a3d3565a60588d6d372ce9db2712cd3",
+    "uris": [
+      "https://git.sr.ht/~kennylevinsen/seatd/archive/0.9.1.tar.gz",
+      "https://sources.buildroot.net/seatd/0.9.1.tar.gz",
+      "https://sources.buildroot.net/0.9.1.tar.gz"
+    ]
+  },
+  "Python-3.12.11.tar.xz": {
+    "algo": "sha256",
+    "checksum": "c30bb24b7f1e9a19b11b55a546434f74e739bb4c271a3e3a80ff4380d49f7adb",
+    "uris": [
+      "https://python.org/ftp/python/3.12.11/Python-3.12.11.tar.xz",
+      "https://sources.buildroot.net/python3/Python-3.12.11.tar.xz",
+      "https://sources.buildroot.net/Python-3.12.11.tar.xz"
+    ]
+  },
+  "SDL-1.2.15.tar.gz": {
+    "algo": "sha256",
+    "checksum": "d6d316a793e5e348155f0dd93b979798933fb98aa1edebcc108829d6474aad00",
+    "uris": [
+      "http://www.libsdl.org/release/SDL-1.2.15.tar.gz",
+      "https://sources.buildroot.net/sdl/SDL-1.2.15.tar.gz",
+      "https://sources.buildroot.net/SDL-1.2.15.tar.gz"
+    ]
+  },
+  "XML-Parser-2.47.tar.gz": {
+    "algo": "sha256",
+    "checksum": "ad4aae643ec784f489b956abe952432871a622d4e2b5c619e8855accbfc4d1d8",
+    "uris": [
+      "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.47.tar.gz",
+      "https://sources.buildroot.net/libxml-parser-perl/XML-Parser-2.47.tar.gz",
+      "https://sources.buildroot.net/XML-Parser-2.47.tar.gz"
+    ]
+  },
+  "acl-2.3.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "97203a72cae99ab89a067fe2210c1cbf052bc492b479eca7d226d9830883b0bd",
+    "uris": [
+      "https://download.savannah.nongnu.org/releases/acl/acl-2.3.2.tar.xz",
+      "https://sources.buildroot.net/acl/acl-2.3.2.tar.xz",
+      "https://sources.buildroot.net/acl-2.3.2.tar.xz"
+    ]
+  },
+  "at-spi2-core-2.50.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "e9f5a8c8235c9dd963b2171de9120301129c677dde933955e1df618b949c4adc",
+    "uris": [
+      "https://download.gnome.org/sources/at-spi2-core/2.50/at-spi2-core-2.50.0.tar.xz",
+      "https://sources.buildroot.net/at-spi2-core/at-spi2-core-2.50.0.tar.xz",
+      "https://sources.buildroot.net/at-spi2-core-2.50.0.tar.xz"
+    ]
+  },
+  "attr-2.5.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
+    "uris": [
+      "http://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.xz",
+      "https://sources.buildroot.net/attr/attr-2.5.2.tar.xz",
+      "https://sources.buildroot.net/attr-2.5.2.tar.xz"
+    ]
+  },
+  "autoconf-2.72.tar.xz": {
+    "algo": "sha256",
+    "checksum": "ba885c1319578d6c94d46e9b0dceb4014caafe2490e437a0dbca3f270a223f5a",
+    "uris": [
+      "https://ftpmirror.gnu.org/autoconf/autoconf-2.72.tar.xz",
+      "https://sources.buildroot.net/autoconf/autoconf-2.72.tar.xz",
+      "https://sources.buildroot.net/autoconf-2.72.tar.xz"
+    ]
+  },
+  "autoconf-archive-2023.02.20.tar.xz": {
+    "algo": "sha256",
+    "checksum": "71d4048479ae28f1f5794619c3d72df9c01df49b1c628ef85fde37596dc31a33",
+    "uris": [
+      "https://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2023.02.20.tar.xz",
+      "https://sources.buildroot.net/autoconf-archive/autoconf-archive-2023.02.20.tar.xz",
+      "https://sources.buildroot.net/autoconf-archive-2023.02.20.tar.xz"
+    ]
+  },
+  "automake-1.16.5.tar.xz": {
+    "algo": "sha256",
+    "checksum": "f01d58cd6d9d77fbdca9eb4bbd5ead1988228fdb73d6f7a201f5f8d6b118b469",
+    "uris": [
+      "https://ftpmirror.gnu.org/automake/automake-1.16.5.tar.xz",
+      "https://sources.buildroot.net/automake/automake-1.16.5.tar.xz",
+      "https://sources.buildroot.net/automake-1.16.5.tar.xz"
+    ]
+  },
+  "binutils-2.43.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "20977ad17729141a2c26d358628f44a0944b84dcfefdec2ba029c2d02f40dfc41cc91c0631044560d2bd6f9a51e1f15846b4b311befbe14f1239f14ff7d57824",
+    "uris": [
+      "https://ftpmirror.gnu.org/binutils/binutils-2.43.1.tar.xz",
+      "https://sources.buildroot.net/binutils/binutils-2.43.1.tar.xz",
+      "https://sources.buildroot.net/binutils-2.43.1.tar.xz"
+    ]
+  },
+  "bison-3.8.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2",
+    "uris": [
+      "https://ftpmirror.gnu.org/bison/bison-3.8.2.tar.xz",
+      "https://sources.buildroot.net/bison/bison-3.8.2.tar.xz",
+      "https://sources.buildroot.net/bison-3.8.2.tar.xz"
+    ]
+  },
+  "build-1.2.2.tar.gz": {
+    "algo": "sha256",
+    "checksum": "119b2fb462adef986483438377a13b2f42064a2a3a4161f24a0cca698a07ac8c",
+    "uris": [
+      "https://files.pythonhosted.org/packages/dd/bb/4a1b7e3a7520e310cf7bfece43788071604e1ccf693a7f0c4638c59068d6/build-1.2.2.tar.gz",
+      "https://sources.buildroot.net/python-pypa-build/build-1.2.2.tar.gz",
+      "https://sources.buildroot.net/build-1.2.2.tar.gz"
+    ]
+  },
+  "busybox-1.37.0.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "3311dff32e746499f4df0d5df04d7eb396382d7e108bb9250e7b519b837043a4",
+    "uris": [
+      "https://www.busybox.net/downloads/busybox-1.37.0.tar.bz2",
+      "https://sources.buildroot.net/busybox/busybox-1.37.0.tar.bz2",
+      "https://sources.buildroot.net/busybox-1.37.0.tar.bz2"
+    ]
+  },
+  "cairo-1.18.4.tar.xz": {
+    "algo": "sha256",
+    "checksum": "445ed8208a6e4823de1226a74ca319d3600e83f6369f99b14265006599c32ccb",
+    "uris": [
+      "http://cairographics.org/releases/cairo-1.18.4.tar.xz",
+      "https://sources.buildroot.net/cairo/cairo-1.18.4.tar.xz",
+      "https://sources.buildroot.net/cairo-1.18.4.tar.xz"
+    ]
+  },
+  "cmake-15.0.7.src.tar.xz": {
+    "algo": "sha256",
+    "checksum": "8986f29b634fdaa9862eedda78513969fe9788301c9f2d938f4c10a3e7a3e7ea",
+    "uris": [
+      "https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/cmake-15.0.7.src.tar.xz",
+      "https://sources.buildroot.net/llvm-cmake/cmake-15.0.7.src.tar.xz",
+      "https://sources.buildroot.net/cmake-15.0.7.src.tar.xz"
+    ]
+  },
+  "cmake-3.31.5.tar.gz": {
+    "algo": "sha256",
+    "checksum": "66fb53a145648be56b46fa9e8ccade3a4d0dfc92e401e52ce76bdad1fea43d27",
+    "uris": [
+      "https://cmake.org/files/v3.31/cmake-3.31.5.tar.gz",
+      "https://sources.buildroot.net/cmake/cmake-3.31.5.tar.gz",
+      "https://sources.buildroot.net/cmake-3.31.5.tar.gz"
+    ]
+  },
+  "dbus-1.14.10.tar.xz": {
+    "algo": "sha256",
+    "checksum": "ba1f21d2bd9d339da2d4aa8780c09df32fea87998b73da24f49ab9df1e36a50f",
+    "uris": [
+      "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.10.tar.xz",
+      "https://sources.buildroot.net/dbus/dbus-1.14.10.tar.xz",
+      "https://sources.buildroot.net/dbus-1.14.10.tar.xz"
+    ]
+  },
+  "eudev-3.2.14.tar.gz": {
+    "algo": "sha256",
+    "checksum": "8da4319102f24abbf7fff5ce9c416af848df163b29590e666d334cc1927f006f",
+    "uris": [
+      "https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz",
+      "https://sources.buildroot.net/eudev/eudev-3.2.14.tar.gz",
+      "https://sources.buildroot.net/eudev-3.2.14.tar.gz"
+    ]
+  },
+  "expat-2.7.1.tar.xz": {
+    "algo": "sha256",
+    "checksum": "354552544b8f99012e5062f7d570ec77f14b412a3ff5c7d8d0dae62c0d217c30",
+    "uris": [
+      "https://github.com/libexpat/libexpat/releases/download/R_2_7_1/expat-2.7.1.tar.xz",
+      "https://sources.buildroot.net/expat/expat-2.7.1.tar.xz",
+      "https://sources.buildroot.net/expat-2.7.1.tar.xz"
+    ]
+  },
+  "fakeroot_1.36.orig.tar.gz": {
+    "algo": "sha256",
+    "checksum": "7fe3cf3daf95ee93b47e568e85f4d341a1f9ae91766b4f9a9cdc29737dea4988",
+    "uris": [
+      "https://snapshot.debian.org/archive/debian/20241022T144244Z/pool/main/f/fakeroot//fakeroot_1.36.orig.tar.gz",
+      "https://sources.buildroot.net/fakeroot/fakeroot_1.36.orig.tar.gz",
+      "https://sources.buildroot.net/fakeroot_1.36.orig.tar.gz"
+    ]
+  },
+  "file-5.46.tar.gz": {
+    "algo": "sha256",
+    "checksum": "c9cc77c7c560c543135edc555af609d5619dbef011997e988ce40a3d75d86088",
+    "uris": [
+      "https://astron.com/pub/file/file-5.46.tar.gz",
+      "https://sources.buildroot.net/file/file-5.46.tar.gz",
+      "https://sources.buildroot.net/file-5.46.tar.gz"
+    ]
+  },
+  "flex-2.6.4.tar.gz": {
+    "algo": "sha256",
+    "checksum": "e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995",
+    "uris": [
+      "https://github.com/westes/flex/files/981163/flex-2.6.4.tar.gz",
+      "https://sources.buildroot.net/flex/flex-2.6.4.tar.gz",
+      "https://sources.buildroot.net/flex-2.6.4.tar.gz"
+    ]
+  },
+  "flit_core-3.11.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "6ceeee3219e9d2ea282041f3e027c441597b450b33007cb81168e887b6113a8f",
+    "uris": [
+      "https://files.pythonhosted.org/packages/bc/18/b9b81cab2b8f63e6e7f72e1ba2766a0454fcd563e7a77b8299cb917ba805/flit_core-3.11.0.tar.gz",
+      "https://sources.buildroot.net/python-flit-core/flit_core-3.11.0.tar.gz",
+      "https://sources.buildroot.net/flit_core-3.11.0.tar.gz"
+    ]
+  },
+  "fontconfig-2.16.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "6a33dc555cc9ba8b10caf7695878ef134eeb36d0af366041f639b1da9b6ed220",
+    "uris": [
+      "https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.16.0.tar.xz",
+      "https://sources.buildroot.net/fontconfig/fontconfig-2.16.0.tar.xz",
+      "https://sources.buildroot.net/fontconfig-2.16.0.tar.xz"
+    ]
+  },
+  "freetype-2.13.3.tar.xz": {
+    "algo": "sha256",
+    "checksum": "0550350666d427c74daeb85d5ac7bb353acba5f76956395995311a9c6f063289",
+    "uris": [
+      "http://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.xz",
+      "https://sources.buildroot.net/freetype/freetype-2.13.3.tar.xz",
+      "https://sources.buildroot.net/freetype-2.13.3.tar.xz"
+    ]
+  },
+  "fribidi-1.0.16.tar.xz": {
+    "algo": "sha256",
+    "checksum": "1b1cde5b235d40479e91be2f0e88a309e3214c8ab470ec8a2744d82a5a9ea05c",
+    "uris": [
+      "https://github.com/fribidi/fribidi/releases/download/v1.0.16/fribidi-1.0.16.tar.xz",
+      "https://sources.buildroot.net/libfribidi/fribidi-1.0.16.tar.xz",
+      "https://sources.buildroot.net/fribidi-1.0.16.tar.xz"
+    ]
+  },
+  "gcc-13.4.0.tar.xz": {
+    "algo": "sha512",
+    "checksum": "9b4b83ecf51ef355b868608b8d257b2fa435c06d2719cb86657a7c2c2a0828ff4ce04e9bac1055bbcad8ed5b4da524cafaef654785e23a50233d95d89201e35f",
+    "uris": [
+      "https://ftpmirror.gnu.org/gcc/gcc-13.4.0/gcc-13.4.0.tar.xz",
+      "https://sources.buildroot.net/gcc/gcc-13.4.0.tar.xz",
+      "https://sources.buildroot.net/gcc-13.4.0.tar.xz"
+    ]
+  },
+  "gdk-pixbuf-2.42.12.tar.xz": {
+    "algo": "sha256",
+    "checksum": "b9505b3445b9a7e48ced34760c3bcb73e966df3ac94c95a148cb669ab748e3c7",
+    "uris": [
+      "https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.12.tar.xz",
+      "https://sources.buildroot.net/gdk-pixbuf/gdk-pixbuf-2.42.12.tar.xz",
+      "https://sources.buildroot.net/gdk-pixbuf-2.42.12.tar.xz"
+    ]
+  },
+  "gettext-0.22.4.tar.xz": {
+    "algo": "sha256",
+    "checksum": "29217f1816ee2e777fa9a01f9956a14139c0c23cc1b20368f06b2888e8a34116",
+    "uris": [
+      "https://ftpmirror.gnu.org/gettext/gettext-0.22.4.tar.xz",
+      "https://sources.buildroot.net/gettext-tiny/gettext-0.22.4.tar.xz",
+      "https://sources.buildroot.net/gettext-0.22.4.tar.xz"
+    ]
+  },
+  "gettext-tiny-0.3.2.tar.gz": {
+    "algo": "sha256",
+    "checksum": "29cc165e27e83d2bb3760118c2368eadab550830d962d758e51bd36eb860f383",
+    "uris": [
+      "https://github.com/sabotage-linux/gettext-tiny/archive/v0.3.2/gettext-tiny-0.3.2.tar.gz",
+      "https://sources.buildroot.net/gettext-tiny/gettext-tiny-0.3.2.tar.gz",
+      "https://sources.buildroot.net/gettext-tiny-0.3.2.tar.gz"
+    ]
+  },
+  "glib-2.82.5.tar.xz": {
+    "algo": "sha256",
+    "checksum": "05c2031f9bdf6b5aba7a06ca84f0b4aced28b19bf1b50c6ab25cc675277cbc3f",
+    "uris": [
+      "https://download.gnome.org/sources/glib/2.82/glib-2.82.5.tar.xz",
+      "https://sources.buildroot.net/libglib2/glib-2.82.5.tar.xz",
+      "https://sources.buildroot.net/glib-2.82.5.tar.xz"
+    ]
+  },
+  "gmp-6.3.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+    "uris": [
+      "https://ftpmirror.gnu.org/gmp/gmp-6.3.0.tar.xz",
+      "https://sources.buildroot.net/gmp/gmp-6.3.0.tar.xz",
+      "https://sources.buildroot.net/gmp-6.3.0.tar.xz"
+    ]
+  },
+  "gperf-3.1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "588546b945bba4b70b6a3a616e80b4ab466e3f33024a352fc2198112cdbb3ae2",
+    "uris": [
+      "https://ftpmirror.gnu.org/gperf/gperf-3.1.tar.gz",
+      "https://sources.buildroot.net/gperf/gperf-3.1.tar.gz",
+      "https://sources.buildroot.net/gperf-3.1.tar.gz"
+    ]
+  },
+  "graphene-1.10.8.tar.gz": {
+    "algo": "sha256",
+    "checksum": "922dc109d2dc5dc56617a29bd716c79dd84db31721a8493a13a5f79109a4a4ed",
+    "uris": [
+      "https://github.com/ebassi/graphene/archive/1.10.8/graphene-1.10.8.tar.gz",
+      "https://sources.buildroot.net/graphene/graphene-1.10.8.tar.gz",
+      "https://sources.buildroot.net/graphene-1.10.8.tar.gz"
+    ]
+  },
+  "gtk+-3.24.43.tar.xz": {
+    "algo": "sha256",
+    "checksum": "7e04f0648515034b806b74ae5d774d87cffb1a2a96c468cb5be476d51bf2f3c7",
+    "uris": [
+      "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.43.tar.xz",
+      "https://sources.buildroot.net/libgtk3/gtk+-3.24.43.tar.xz",
+      "https://sources.buildroot.net/gtk+-3.24.43.tar.xz"
+    ]
+  },
+  "gtk-4.14.5.tar.xz": {
+    "algo": "sha256",
+    "checksum": "5547f2b9f006b133993e070b87c17804e051efda3913feaca1108fa2be41e24d",
+    "uris": [
+      "https://download.gnome.org/sources/gtk/4.14/gtk-4.14.5.tar.xz",
+      "https://sources.buildroot.net/libgtk4/gtk-4.14.5.tar.xz",
+      "https://sources.buildroot.net/gtk-4.14.5.tar.xz"
+    ]
+  },
+  "harfbuzz-10.3.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "cd63fc3cbae32622588e46e0670fabf78ee6cff44a6348ca7f037dae9a32f9ea",
+    "uris": [
+      "https://github.com/harfbuzz/harfbuzz/releases/download/10.3.0/harfbuzz-10.3.0.tar.xz",
+      "https://sources.buildroot.net/harfbuzz/harfbuzz-10.3.0.tar.xz",
+      "https://sources.buildroot.net/harfbuzz-10.3.0.tar.xz"
+    ]
+  },
+  "hicolor-icon-theme-0.18.tar.xz": {
+    "algo": "sha256",
+    "checksum": "db0e50a80aa3bf64bb45cbca5cf9f75efd9348cf2ac690b907435238c3cf81d7",
+    "uris": [
+      "http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.18.tar.xz",
+      "https://sources.buildroot.net/hicolor-icon-theme/hicolor-icon-theme-0.18.tar.xz",
+      "https://sources.buildroot.net/hicolor-icon-theme-0.18.tar.xz"
+    ]
+  },
+  "hwdata-0.395.tar.gz": {
+    "algo": "sha256",
+    "checksum": "1166f733c57afa82cfdad56e62ef044835fbc8c99ef65f033e6a5802716b5c66",
+    "uris": [
+      "https://github.com/vcrhonek/hwdata/archive/v0.395/hwdata-0.395.tar.gz",
+      "https://sources.buildroot.net/hwdata/hwdata-0.395.tar.gz",
+      "https://sources.buildroot.net/hwdata-0.395.tar.gz"
+    ]
+  },
+  "installer-0.7.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "a26d3e3116289bb08216e0d0f7d925fcef0b0194eedfa0c944bcaaa106c4b631",
+    "uris": [
+      "https://files.pythonhosted.org/packages/05/18/ceeb4e3ab3aa54495775775b38ae42b10a92f42ce42dfa44da684289b8c8/installer-0.7.0.tar.gz",
+      "https://sources.buildroot.net/python-installer/installer-0.7.0.tar.gz",
+      "https://sources.buildroot.net/installer-0.7.0.tar.gz"
+    ]
+  },
+  "intltool-0.51.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd",
+    "uris": [
+      "https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz",
+      "https://sources.buildroot.net/intltool/intltool-0.51.0.tar.gz",
+      "https://sources.buildroot.net/intltool-0.51.0.tar.gz"
+    ]
+  },
+  "jbig2dec-0.20.tar.gz": {
+    "algo": "sha256",
+    "checksum": "7b63ff6470289547e7a3a0f145cb8ea6c2afffdd65645b7d87d3b7febc96fb3a",
+    "uris": [
+      "https://github.com/ArtifexSoftware/jbig2dec/releases/download/0.20/jbig2dec-0.20.tar.gz",
+      "https://sources.buildroot.net/jbig2dec/jbig2dec-0.20.tar.gz",
+      "https://sources.buildroot.net/jbig2dec-0.20.tar.gz"
+    ]
+  },
+  "jpegsrc.v9f.tar.gz": {
+    "algo": "sha256",
+    "checksum": "04705c110cb2469caa79fb71fba3d7bf834914706e9641a4589485c1f832565b",
+    "uris": [
+      "http://www.ijg.org/files/jpegsrc.v9f.tar.gz",
+      "https://sources.buildroot.net/libjpeg/jpegsrc.v9f.tar.gz",
+      "https://sources.buildroot.net/jpegsrc.v9f.tar.gz"
+    ]
+  },
+  "kmod-33.tar.xz": {
+    "algo": "sha256",
+    "checksum": "dc768b3155172091f56dc69430b5481f2d76ecd9ccb54ead8c2540dbcf5ea9bc",
+    "uris": [
+      "https://cdn.kernel.org/pub/linux/utils/kernel/kmod/kmod-33.tar.xz",
+      "https://sources.buildroot.net/kmod/kmod-33.tar.xz",
+      "https://sources.buildroot.net/kmod-33.tar.xz"
+    ]
+  },
+  "lcms2-2.16.tar.gz": {
+    "algo": "sha256",
+    "checksum": "d873d34ad8b9b4cea010631f1a6228d2087475e4dc5e763eb81acc23d9d45a51",
+    "uris": [
+      "http://downloads.sourceforge.net/project/lcms/lcms/2.16/lcms2-2.16.tar.gz",
+      "https://sources.buildroot.net/lcms2/lcms2-2.16.tar.gz",
+      "https://sources.buildroot.net/lcms2-2.16.tar.gz"
+    ]
+  },
+  "libX11-1.8.7.tar.xz": {
+    "algo": "sha512",
+    "checksum": "d53bfc18f38d339a6a695b09835b2ae96b323881678bfe7ddca697605e3bdf4102ff49cc3078880a6c55b5977fcdd0aadaf5429086132de3a5bda302f79a2fa6",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.7.tar.xz",
+      "https://sources.buildroot.net/xlib_libX11/libX11-1.8.7.tar.xz",
+      "https://sources.buildroot.net/libX11-1.8.7.tar.xz"
+    ]
+  },
+  "libXau-1.0.11.tar.xz": {
+    "algo": "sha512",
+    "checksum": "f56abba3bef3fdd4739dfa69367a4251b5fab7c89194c9aece9efa66b9ebbf0736690cc9bd654aab19d9db377e4b9a5268c9c020b3d293bb5351bff5fe75a4dd",
+    "uris": [
+      "http://xorg.freedesktop.org/releases/individual/lib/libXau-1.0.11.tar.xz",
+      "https://sources.buildroot.net/xlib_libXau/libXau-1.0.11.tar.xz",
+      "https://sources.buildroot.net/libXau-1.0.11.tar.xz"
+    ]
+  },
+  "libXdmcp-1.1.4.tar.xz": {
+    "algo": "sha512",
+    "checksum": "83b384d43bfb034c395f83f97d1c6e73aa3d5faa8f8756b08e697c0b9c3c87189651b51e8213fbd1f5f9cbc2d8136cbf143627481744345d78cfe0ff2ad074a9",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.4.tar.xz",
+      "https://sources.buildroot.net/xlib_libXdmcp/libXdmcp-1.1.4.tar.xz",
+      "https://sources.buildroot.net/libXdmcp-1.1.4.tar.xz"
+    ]
+  },
+  "libdisplay-info-0.2.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "5a2f002a16f42dd3540c8846f80a90b8f4bdcd067a94b9d2087bc2feae974176",
+    "uris": [
+      "https://gitlab.freedesktop.org/emersion/libdisplay-info/-/releases/0.2.0/downloads/libdisplay-info-0.2.0.tar.xz",
+      "https://sources.buildroot.net/libdisplay-info/libdisplay-info-0.2.0.tar.xz",
+      "https://sources.buildroot.net/libdisplay-info-0.2.0.tar.xz"
+    ]
+  },
+  "libdrm-2.4.124.tar.xz": {
+    "algo": "sha512",
+    "checksum": "0408c3ae5780c57d19321a9a7b046d656e252b2f48e520b2beb18f83495bea39c445deb9a9a6795b46194051c2ea4da476e08c63972daf841064099df6dff365",
+    "uris": [
+      "https://dri.freedesktop.org/libdrm/libdrm-2.4.124.tar.xz",
+      "https://sources.buildroot.net/libdrm/libdrm-2.4.124.tar.xz",
+      "https://sources.buildroot.net/libdrm-2.4.124.tar.xz"
+    ]
+  },
+  "libepoxy-1.5.10.tar.xz": {
+    "algo": "sha256",
+    "checksum": "072cda4b59dd098bba8c2363a6247299db1fa89411dc221c8b81b8ee8192e623",
+    "uris": [
+      "https://download.gnome.org/sources/libepoxy/1.5/libepoxy-1.5.10.tar.xz",
+      "https://sources.buildroot.net/libepoxy/libepoxy-1.5.10.tar.xz",
+      "https://sources.buildroot.net/libepoxy-1.5.10.tar.xz"
+    ]
+  },
+  "liberation-fonts-ttf-2.1.5.tar.gz": {
+    "algo": "sha256",
+    "checksum": "7191c669bf38899f73a2094ed00f7b800553364f90e2637010a69c0e268f25d0",
+    "uris": [
+      "https://github.com/liberationfonts/liberation-fonts/files/7261482/liberation-fonts-ttf-2.1.5.tar.gz",
+      "https://sources.buildroot.net/liberation/liberation-fonts-ttf-2.1.5.tar.gz",
+      "https://sources.buildroot.net/liberation-fonts-ttf-2.1.5.tar.gz"
+    ]
+  },
+  "libevdev-1.13.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "9b75bad4bc13948854c8dff7a7a46aca6c06d1410ccb000f881bf76055ccac040595c3b24fb1a574be875b5c262eb86820b9ec3383752641bc2047135e5a412f",
+    "uris": [
+      "http://www.freedesktop.org/software/libevdev/libevdev-1.13.1.tar.xz",
+      "https://sources.buildroot.net/libevdev/libevdev-1.13.1.tar.xz",
+      "https://sources.buildroot.net/libevdev-1.13.1.tar.xz"
+    ]
+  },
+  "libffi-3.4.6.tar.gz": {
+    "algo": "sha256",
+    "checksum": "b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e",
+    "uris": [
+      "https://github.com/libffi/libffi/releases/download/v3.4.6/libffi-3.4.6.tar.gz",
+      "https://sources.buildroot.net/libffi/libffi-3.4.6.tar.gz",
+      "https://sources.buildroot.net/libffi-3.4.6.tar.gz"
+    ]
+  },
+  "libinput-1.27.0.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "8e823cc9f44c51b63ae90af0b73676ed82c0402cc1cbd4a59ac91b7bb6cad716",
+    "uris": [
+      "https://gitlab.freedesktop.org/libinput/libinput/-/archive/1.27.0/libinput-1.27.0.tar.bz2",
+      "https://sources.buildroot.net/libinput/libinput-1.27.0.tar.bz2",
+      "https://sources.buildroot.net/libinput-1.27.0.tar.bz2"
+    ]
+  },
+  "libpciaccess-0.18.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "ef27999446e735df2331e94219ee3dafe9198a2472bb452f63ef9c9c446d5431f9e231e224cfabdeba1402974a5a0064546f9abced4d1770f994f5fc0c2b3310",
+    "uris": [
+      "http://xorg.freedesktop.org/releases/individual/lib/libpciaccess-0.18.1.tar.xz",
+      "https://sources.buildroot.net/libpciaccess/libpciaccess-0.18.1.tar.xz",
+      "https://sources.buildroot.net/libpciaccess-0.18.1.tar.xz"
+    ]
+  },
+  "libpng-1.6.46.tar.xz": {
+    "algo": "sha256",
+    "checksum": "f3aa8b7003998ab92a4e9906c18d19853e999f9d3bca9bd1668f54fa81707cb1",
+    "uris": [
+      "http://downloads.sourceforge.net/project/libpng/libpng16/1.6.46/libpng-1.6.46.tar.xz",
+      "https://sources.buildroot.net/libpng/libpng-1.6.46.tar.xz",
+      "https://sources.buildroot.net/libpng-1.6.46.tar.xz"
+    ]
+  },
+  "libpthread-stubs-0.5.tar.xz": {
+    "algo": "sha512",
+    "checksum": "a24f7c40dcaf5f6ca0085972117fed5ad0851f6fc1972fdab799d27236afaaa4f7baa93e40532f93984d313d94456819aaf4ec8f8d1bbb2e5c4fc76c31891d82",
+    "uris": [
+      "http://xcb.freedesktop.org/dist/libpthread-stubs-0.5.tar.xz",
+      "https://sources.buildroot.net/libpthread-stubs/libpthread-stubs-0.5.tar.xz",
+      "https://sources.buildroot.net/libpthread-stubs-0.5.tar.xz"
+    ]
+  },
+  "librsvg-2.50.9.tar.xz": {
+    "algo": "sha256",
+    "checksum": "518905fffa879b6c7f3db1aae961cf31333e0eadc7b4cdd4f531707868c54b53",
+    "uris": [
+      "https://download.gnome.org/sources/librsvg/2.50/librsvg-2.50.9.tar.xz",
+      "https://sources.buildroot.net/librsvg/librsvg-2.50.9.tar.xz",
+      "https://sources.buildroot.net/librsvg-2.50.9.tar.xz"
+    ]
+  },
+  "libsha1-0.3.tar.gz": {
+    "algo": "sha256",
+    "checksum": "ef4c75007ac41c3dc09e0225943c789ba2b9c632a6cd7b548e0519477ac2f768",
+    "uris": [
+      "https://github.com/dottedmag/libsha1/archive/0.3/libsha1-0.3.tar.gz",
+      "https://sources.buildroot.net/libsha1/libsha1-0.3.tar.gz",
+      "https://sources.buildroot.net/libsha1-0.3.tar.gz"
+    ]
+  },
+  "libtirpc-1.3.6.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "bbd26a8f0df5690a62a47f6aa30f797f3ef8d02560d1bc449a83066b5a1d3508",
+    "uris": [
+      "http://downloads.sourceforge.net/project/libtirpc/libtirpc/1.3.6/libtirpc-1.3.6.tar.bz2",
+      "https://sources.buildroot.net/libtirpc/libtirpc-1.3.6.tar.bz2",
+      "https://sources.buildroot.net/libtirpc-1.3.6.tar.bz2"
+    ]
+  },
+  "libtool-2.4.6.tar.xz": {
+    "algo": "sha256",
+    "checksum": "7c87a8c2c8c0fc9cd5019e402bed4292462d00a718a7cd5f11218153bf28b26f",
+    "uris": [
+      "https://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz",
+      "https://sources.buildroot.net/libtool/libtool-2.4.6.tar.xz",
+      "https://sources.buildroot.net/libtool-2.4.6.tar.xz"
+    ]
+  },
+  "libxcb-1.15.tar.xz": {
+    "algo": "sha512",
+    "checksum": "f6c7d766b7cf9cab6abe948ee424cbae6951dbfe2f76fa58a109cdc05b0f0919dcc4e38176a22ff4b95fc1e38596115317e32ba33b24cae0035a4e30dbcbdad9",
+    "uris": [
+      "http://xcb.freedesktop.org/dist/libxcb-1.15.tar.xz",
+      "https://sources.buildroot.net/libxcb/libxcb-1.15.tar.xz",
+      "https://sources.buildroot.net/libxcb-1.15.tar.xz"
+    ]
+  },
+  "libxkbcommon-1.7.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247",
+    "uris": [
+      "https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz",
+      "https://sources.buildroot.net/libxkbcommon/libxkbcommon-1.7.0.tar.xz",
+      "https://sources.buildroot.net/libxkbcommon-1.7.0.tar.xz"
+    ]
+  },
+  "libxkbfile-1.1.2.tar.xz": {
+    "algo": "sha512",
+    "checksum": "0639fad7b64b36a85f8d24cdd40085e0ec18d7a671793b8b5c26449e9cc5a84c37117e7757fb1238ac353044935dd00013e42166de5af9dec428e873a47e598d",
+    "uris": [
+      "http://xorg.freedesktop.org/releases/individual/lib/libxkbfile-1.1.2.tar.xz",
+      "https://sources.buildroot.net/xlib_libxkbfile/libxkbfile-1.1.2.tar.xz",
+      "https://sources.buildroot.net/libxkbfile-1.1.2.tar.xz"
+    ]
+  },
+  "libxml2-2.13.8.tar.xz": {
+    "algo": "sha256",
+    "checksum": "277294cb33119ab71b2bc81f2f445e9bc9435b893ad15bb2cd2b0e859a0ee84a",
+    "uris": [
+      "https://download.gnome.org/sources/libxml2/2.13/libxml2-2.13.8.tar.xz",
+      "https://sources.buildroot.net/libxml2/libxml2-2.13.8.tar.xz",
+      "https://sources.buildroot.net/libxml2-2.13.8.tar.xz"
+    ]
+  },
+  "libxslt-1.1.42.tar.xz": {
+    "algo": "sha256",
+    "checksum": "85ca62cac0d41fc77d3f6033da9df6fd73d20ea2fc18b0a3609ffb4110e1baeb",
+    "uris": [
+      "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.42.tar.xz",
+      "https://sources.buildroot.net/libxslt/libxslt-1.1.42.tar.xz",
+      "https://sources.buildroot.net/libxslt-1.1.42.tar.xz"
+    ]
+  },
+  "linux-6.12.44.tar.xz": {
+    "algo": "sha256",
+    "checksum": "b650210ed3027b224969d148aa377452a9aad3ae7f2851abedd31adfef16bdae",
+    "uris": [
+      "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.44.tar.xz",
+      "https://sources.buildroot.net/linux/linux-6.12.44.tar.xz",
+      "https://sources.buildroot.net/linux-6.12.44.tar.xz"
+    ]
+  },
+  "llvm-15.0.7.src.tar.xz": {
+    "algo": "sha256",
+    "checksum": "4ad8b2cc8003c86d0078d15d987d84e3a739f24aae9033865c027abae93ee7a4",
+    "uris": [
+      "https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-15.0.7.src.tar.xz",
+      "https://sources.buildroot.net/llvm/llvm-15.0.7.src.tar.xz",
+      "https://sources.buildroot.net/llvm-15.0.7.src.tar.xz"
+    ]
+  },
+  "ltris-1.3.2.tar.gz": {
+    "algo": "sha256",
+    "checksum": "ff28c55a18c61f28a86ba7f30f13222dfed0f7fbeb492acd95c97de9c659cec9",
+    "uris": [
+      "http://downloads.sourceforge.net/lgames/ltris/ltris-1.3.2.tar.gz",
+      "https://sources.buildroot.net/ltris/ltris-1.3.2.tar.gz",
+      "https://sources.buildroot.net/ltris-1.3.2.tar.gz"
+    ]
+  },
+  "lua-5.4.8.tar.gz": {
+    "algo": "sha256",
+    "checksum": "4f18ddae154e793e46eeab727c59ef1c0c0c2b744e7b94219710d76f530629ae",
+    "uris": [
+      "https://www.lua.org/ftp/lua-5.4.8.tar.gz",
+      "https://sources.buildroot.net/lua/lua-5.4.8.tar.gz",
+      "https://sources.buildroot.net/lua-5.4.8.tar.gz"
+    ]
+  },
+  "m4-1.4.20.tar.xz": {
+    "algo": "sha256",
+    "checksum": "e236ea3a1ccf5f6c270b1c4bb60726f371fa49459a8eaaebc90b216b328daf2b",
+    "uris": [
+      "https://ftpmirror.gnu.org/m4/m4-1.4.20.tar.xz",
+      "https://sources.buildroot.net/m4/m4-1.4.20.tar.xz",
+      "https://sources.buildroot.net/m4-1.4.20.tar.xz"
+    ]
+  },
+  "mako-1.3.8.tar.gz": {
+    "algo": "sha256",
+    "checksum": "577b97e414580d3e088d47c2dbbe9594aa7a5146ed2875d4dfa9075af2dd3cc8",
+    "uris": [
+      "https://files.pythonhosted.org/packages/5f/d9/8518279534ed7dace1795d5a47e49d5299dd0994eed1053996402a8902f9/mako-1.3.8.tar.gz",
+      "https://sources.buildroot.net/python-mako/mako-1.3.8.tar.gz",
+      "https://sources.buildroot.net/mako-1.3.8.tar.gz"
+    ]
+  },
+  "markupsafe-3.0.2.tar.gz": {
+    "algo": "sha256",
+    "checksum": "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0",
+    "uris": [
+      "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz",
+      "https://sources.buildroot.net/python-markupsafe/markupsafe-3.0.2.tar.gz",
+      "https://sources.buildroot.net/markupsafe-3.0.2.tar.gz"
+    ]
+  },
+  "mesa-24.0.9.tar.xz": {
+    "algo": "sha512",
+    "checksum": "de2ee6c9df1fc106ee10befe0a76be1e9cfe83d65dbdb83bad6d8d7cfaa085232fb115293a1a790b37b50b1fe14bd58aafbcfe5a15e953b5901a7105d57569a5",
+    "uris": [
+      "https://archive.mesa3d.org/mesa-24.0.9.tar.xz",
+      "https://sources.buildroot.net/mesa3d/mesa-24.0.9.tar.xz",
+      "https://sources.buildroot.net/mesa-24.0.9.tar.xz"
+    ]
+  },
+  "mesa-demos-9.0.0.tar.xz": {
+    "algo": "sha512",
+    "checksum": "af33ef72a521416e39d93370b2b4ccb768f08084c9e4c0aa62868210d9465c858e5cb8e5d23952295a3073946f609eb8723ee60b39dd9fb6696c4e45aafbb2c1",
+    "uris": [
+      "https://archive.mesa3d.org/demos/mesa-demos-9.0.0.tar.xz",
+      "https://sources.buildroot.net/mesa3d-demos/mesa-demos-9.0.0.tar.xz",
+      "https://sources.buildroot.net/mesa-demos-9.0.0.tar.xz"
+    ]
+  },
+  "meson-1.7.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "08efbe84803eed07f863b05092d653a9d348f7038761d900412fddf56deb0284",
+    "uris": [
+      "https://github.com/mesonbuild/meson/releases/download/1.7.0/meson-1.7.0.tar.gz",
+      "https://sources.buildroot.net/meson/meson-1.7.0.tar.gz",
+      "https://sources.buildroot.net/meson-1.7.0.tar.gz"
+    ]
+  },
+  "micropython-1.22.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "bb3ba34848a7620663b6a7cba22af45d3056fc79328c2ceb943874b5478d8756",
+    "uris": [
+      "https://micropython.org/resources/source/micropython-1.22.2.tar.xz",
+      "https://sources.buildroot.net/micropython/micropython-1.22.2.tar.xz",
+      "https://sources.buildroot.net/micropython-1.22.2.tar.xz"
+    ]
+  },
+  "mpc-1.3.1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8",
+    "uris": [
+      "https://ftpmirror.gnu.org/mpc/mpc-1.3.1.tar.gz",
+      "https://sources.buildroot.net/mpc/mpc-1.3.1.tar.gz",
+      "https://sources.buildroot.net/mpc-1.3.1.tar.gz"
+    ]
+  },
+  "mpfr-4.1.1.tar.xz": {
+    "algo": "sha256",
+    "checksum": "ffd195bd567dbaffc3b98b23fd00aad0537680c9896171e44fe3ff79e28ac33d",
+    "uris": [
+      "http://www.mpfr.org/mpfr-4.1.1/mpfr-4.1.1.tar.xz",
+      "https://sources.buildroot.net/mpfr/mpfr-4.1.1.tar.xz",
+      "https://sources.buildroot.net/mpfr-4.1.1.tar.xz"
+    ]
+  },
+  "mtdev-1.1.6.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "15d7b28da8ac71d8bc8c9287c2045fd174267bc740bec10cfda332dc1204e0e0",
+    "uris": [
+      "http://bitmath.org/code/mtdev/mtdev-1.1.6.tar.bz2",
+      "https://sources.buildroot.net/mtdev/mtdev-1.1.6.tar.bz2",
+      "https://sources.buildroot.net/mtdev-1.1.6.tar.bz2"
+    ]
+  },
+  "musl-1.2.5.tar.gz": {
+    "algo": "sha256",
+    "checksum": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+    "uris": [
+      "http://musl.libc.org/releases/musl-1.2.5.tar.gz",
+      "https://sources.buildroot.net/musl/musl-1.2.5.tar.gz",
+      "https://sources.buildroot.net/musl-1.2.5.tar.gz"
+    ]
+  },
+  "musl-fts-1.2.7.tar.gz": {
+    "algo": "sha256",
+    "checksum": "49ae567a96dbab22823d045ffebe0d6b14b9b799925e9ca9274d47d26ff482a6",
+    "uris": [
+      "https://github.com/void-linux/musl-fts/archive/v1.2.7/musl-fts-1.2.7.tar.gz",
+      "https://sources.buildroot.net/musl-fts/musl-fts-1.2.7.tar.gz",
+      "https://sources.buildroot.net/musl-fts-1.2.7.tar.gz"
+    ]
+  },
+  "nano-8.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "d5ad07dd862facae03051c54c6535e54c7ed7407318783fcad1ad2d7076fffeb",
+    "uris": [
+      "https://www.nano-editor.org/dist/v8/nano-8.2.tar.xz",
+      "https://sources.buildroot.net/nano/nano-8.2.tar.xz",
+      "https://sources.buildroot.net/nano-8.2.tar.xz"
+    ]
+  },
+  "ncurses-6.4-20230603.tar.gz": {
+    "algo": "sha256",
+    "checksum": "b0910671694c2c8377f579eea68477a15d67bd20ddd4b29328cfe15c62c7b3fd",
+    "uris": [
+      "https://github.com/ThomasDickey/ncurses-snapshots/archive/v6_4_20230603/ncurses-6.4-20230603.tar.gz",
+      "https://sources.buildroot.net/ncurses/ncurses-6.4-20230603.tar.gz",
+      "https://sources.buildroot.net/ncurses-6.4-20230603.tar.gz"
+    ]
+  },
+  "ninja-1.11.1.g95dee.kitware.jobserver-1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "7ba84551f5b315b4270dc7c51adef5dff83a2154a3665a6c9744245c122dd0db",
+    "uris": [
+      "https://github.com/Kitware/ninja/archive/v1.11.1.g95dee.kitware.jobserver-1/ninja-1.11.1.g95dee.kitware.jobserver-1.tar.gz",
+      "https://sources.buildroot.net/ninja/ninja-1.11.1.g95dee.kitware.jobserver-1.tar.gz",
+      "https://sources.buildroot.net/ninja-1.11.1.g95dee.kitware.jobserver-1.tar.gz"
+    ]
+  },
+  "openjpeg-2.5.3.tar.gz": {
+    "algo": "sha256",
+    "checksum": "368fe0468228e767433c9ebdea82ad9d801a3ad1e4234421f352c8b06e7aa707",
+    "uris": [
+      "https://github.com/uclouvain/openjpeg/archive/v2.5.3/openjpeg-2.5.3.tar.gz",
+      "https://sources.buildroot.net/openjpeg/openjpeg-2.5.3.tar.gz",
+      "https://sources.buildroot.net/openjpeg-2.5.3.tar.gz"
+    ]
+  },
+  "packaging-24.2.tar.gz": {
+    "algo": "sha256",
+    "checksum": "c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f",
+    "uris": [
+      "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz",
+      "https://sources.buildroot.net/python-packaging/packaging-24.2.tar.gz",
+      "https://sources.buildroot.net/packaging-24.2.tar.gz"
+    ]
+  },
+  "pango-1.54.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "8a9eed75021ee734d7fc0fdf3a65c3bba51dfefe4ae51a9b414a60c70b2d1ed8",
+    "uris": [
+      "https://download.gnome.org/sources/pango/1.54/pango-1.54.0.tar.xz",
+      "https://sources.buildroot.net/pango/pango-1.54.0.tar.xz",
+      "https://sources.buildroot.net/pango-1.54.0.tar.xz"
+    ]
+  },
+  "patchelf-0.13.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "4c7ed4bcfc1a114d6286e4a0d3c1a90db147a4c3adda1814ee0eee0f9ee917ed",
+    "uris": [
+      "https://github.com/NixOS/patchelf/releases/download/0.13/patchelf-0.13.tar.bz2",
+      "https://sources.buildroot.net/patchelf/patchelf-0.13.tar.bz2",
+      "https://sources.buildroot.net/patchelf-0.13.tar.bz2"
+    ]
+  },
+  "pcre2-10.44.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "d34f02e113cf7193a1ebf2770d3ac527088d485d4e047ed10e5d217c6ef5de96",
+    "uris": [
+      "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.44/pcre2-10.44.tar.bz2",
+      "https://sources.buildroot.net/pcre2/pcre2-10.44.tar.bz2",
+      "https://sources.buildroot.net/pcre2-10.44.tar.bz2"
+    ]
+  },
+  "pixman-0.44.2.tar.xz": {
+    "algo": "sha512",
+    "checksum": "b24907f9a0bf6a9aa3278d31986c562c5f2d68f8c178021497c8648aca9f91e4c6f1ecfacf93eb01ba4f03ce4cfc5970fc40bb0fe6724bac9210fc57da09cba4",
+    "uris": [
+      "https://xorg.freedesktop.org/releases/individual/lib/pixman-0.44.2.tar.xz",
+      "https://sources.buildroot.net/pixman/pixman-0.44.2.tar.xz",
+      "https://sources.buildroot.net/pixman-0.44.2.tar.xz"
+    ]
+  },
+  "pkgconf-2.3.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "3a9080ac51d03615e7c1910a0a2a8df08424892b5f13b0628a204d3fcce0ea8b",
+    "uris": [
+      "https://distfiles.ariadne.space/pkgconf/pkgconf-2.3.0.tar.xz",
+      "https://sources.buildroot.net/pkgconf/pkgconf-2.3.0.tar.xz",
+      "https://sources.buildroot.net/pkgconf-2.3.0.tar.xz"
+    ]
+  },
+  "poppler-22.12.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "d9aa9cacdfbd0f8e98fc2b3bb008e645597ed480685757c3e7bc74b4278d15c0",
+    "uris": [
+      "https://poppler.freedesktop.org/poppler-22.12.0.tar.xz",
+      "https://sources.buildroot.net/poppler/poppler-22.12.0.tar.xz",
+      "https://sources.buildroot.net/poppler-22.12.0.tar.xz"
+    ]
+  },
+  "pyproject_hooks-1.2.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "1e859bd5c40fae9448642dd871adf459e5e2084186e8d2c2a79a824c970da1f8",
+    "uris": [
+      "https://files.pythonhosted.org/packages/e7/82/28175b2414effca1cdac8dc99f76d660e7a4fb0ceefa4b4ab8f5f6742925/pyproject_hooks-1.2.0.tar.gz",
+      "https://sources.buildroot.net/python-pyproject-hooks/pyproject_hooks-1.2.0.tar.gz",
+      "https://sources.buildroot.net/pyproject_hooks-1.2.0.tar.gz"
+    ]
+  },
+  "qt5base-2b9835f5c9bcfe3105b60a8dd33c1db7d8611378-git4.tar.gz": {
+    "algo": "sha256",
+    "checksum": "2d6ede564444b617a7fe6e8fa65b3d81df3a3308641cf7c35aef6aa471a21269",
+    "uris": [
+      "https://sources.buildroot.net/qt5base/qt5base-2b9835f5c9bcfe3105b60a8dd33c1db7d8611378-git4.tar.gz",
+      "https://sources.buildroot.net/qt5base-2b9835f5c9bcfe3105b60a8dd33c1db7d8611378-git4.tar.gz"
+    ]
+  },
+  "qtwayland-11e099c6b7fbec0e198bffaf8016676ef430cfba.tar.bz2": {
+    "algo": "sha256",
+    "checksum": "49fa530747c14e6dbe17f6c683e3292340db8bbaf4f17f7699467d3004b45b5b",
+    "uris": [
+      "https://invent.kde.org/qt/qt/qtwayland/-/archive/11e099c6b7fbec0e198bffaf8016676ef430cfba/qtwayland-11e099c6b7fbec0e198bffaf8016676ef430cfba.tar.bz2",
+      "https://sources.buildroot.net/qt5wayland/qtwayland-11e099c6b7fbec0e198bffaf8016676ef430cfba.tar.bz2",
+      "https://sources.buildroot.net/qtwayland-11e099c6b7fbec0e198bffaf8016676ef430cfba.tar.bz2"
+    ]
+  },
+  "queue.h": {
+    "algo": "sha256",
+    "checksum": "c13407edd0e33be73cae72514cb234f8612e1c0e54401c9448daffd3a240158b",
+    "uris": [
+      "https://raw.githubusercontent.com/NetBSD/src/03be82a6b173b3c62116b7a186067fed3004dd44/sys/sys/queue.h",
+      "https://sources.buildroot.net/musl-compat-headers/queue.h",
+      "https://sources.buildroot.net/queue.h"
+    ]
+  },
+  "rust-1.82.0-x86_64-unknown-linux-gnu.tar.xz": {
+    "algo": "sha256",
+    "checksum": "8a6bf24ca1fee2bd861590431c7954674191a0c0dfa0af4169731bc1459cf58a",
+    "uris": [
+      "https://static.rust-lang.org/dist/rust-1.82.0-x86_64-unknown-linux-gnu.tar.xz",
+      "https://sources.buildroot.net/rust-bin/rust-1.82.0-x86_64-unknown-linux-gnu.tar.xz",
+      "https://sources.buildroot.net/rust-1.82.0-x86_64-unknown-linux-gnu.tar.xz"
+    ]
+  },
+  "setuptools-80.9.0.tar.gz": {
+    "algo": "sha256",
+    "checksum": "f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c",
+    "uris": [
+      "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz",
+      "https://sources.buildroot.net/python-setuptools/setuptools-80.9.0.tar.gz",
+      "https://sources.buildroot.net/setuptools-80.9.0.tar.gz"
+    ]
+  },
+  "shared-mime-info-1.12.tar.xz": {
+    "algo": "sha256",
+    "checksum": "18b2f0fe07ed0d6f81951a5fd5ece44de9c8aeb4dc5bb20d4f595f6cc6bd403e",
+    "uris": [
+      "https://gitlab.freedesktop.org/xdg/shared-mime-info/uploads/80c7f1afbcad2769f38aeb9ba6317a51/shared-mime-info-1.12.tar.xz",
+      "https://sources.buildroot.net/shared-mime-info/shared-mime-info-1.12.tar.xz",
+      "https://sources.buildroot.net/shared-mime-info-1.12.tar.xz"
+    ]
+  },
+  "sl-5.02.tar.gz": {
+    "algo": "sha256",
+    "checksum": "1e5996757f879c81f202a18ad8e982195cf51c41727d3fea4af01fdcbbb5563a",
+    "uris": [
+      "https://github.com/mtoyoda/sl/archive/5.02/sl-5.02.tar.gz",
+      "https://sources.buildroot.net/sl/sl-5.02.tar.gz",
+      "https://sources.buildroot.net/sl-5.02.tar.gz"
+    ]
+  },
+  "tiff-4.7.0.tar.xz": {
+    "algo": "sha256",
+    "checksum": "273a0a73b1f0bed640afee4a5df0337357ced5b53d3d5d1c405b936501f71017",
+    "uris": [
+      "https://download.osgeo.org/libtiff/tiff-4.7.0.tar.xz",
+      "https://sources.buildroot.net/tiff/tiff-4.7.0.tar.xz",
+      "https://sources.buildroot.net/tiff-4.7.0.tar.xz"
+    ]
+  },
+  "util-linux-2.40.2.tar.xz": {
+    "algo": "sha256",
+    "checksum": "d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3",
+    "uris": [
+      "https://cdn.kernel.org/pub/linux/utils/util-linux/v2.40/util-linux-2.40.2.tar.xz",
+      "https://sources.buildroot.net/util-linux/util-linux-2.40.2.tar.xz",
+      "https://sources.buildroot.net/util-linux-2.40.2.tar.xz"
+    ]
+  },
+  "util-macros-1.20.0.tar.xz": {
+    "algo": "sha512",
+    "checksum": "76caefb118bf1675d7b2b96e1bbb04eb9a320b02e120839e55a22ef98538ecf00d0e686a67186fc8fdc8492d277ffe3125ae8b7ac61ce4739edc0de3f468d2eb",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/util/util-macros-1.20.0.tar.xz",
+      "https://sources.buildroot.net/xutil_util-macros/util-macros-1.20.0.tar.xz",
+      "https://sources.buildroot.net/util-macros-1.20.0.tar.xz"
+    ]
+  },
+  "v0.10.1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "d4fd158d998ab8302fa23bb01119b434bbfaf7139b59f9c74530a703176cb213",
+    "uris": [
+      "https://codeberg.org/gumbo-parser/gumbo-parser/archive/v0.10.1.tar.gz",
+      "https://sources.buildroot.net/gumbo-parser/v0.10.1.tar.gz",
+      "https://sources.buildroot.net/v0.10.1.tar.gz"
+    ]
+  },
+  "wayland-1.23.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "818eda003e3f7aa15690eedb1ff227a6056b2ce54bf23d45ffe573dc40a914623c5a1358218b59444dcdc483db0503324f0d27091d0ea954412a8b290de5f50a",
+    "uris": [
+      "https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.23.1/downloads/wayland-1.23.1.tar.xz",
+      "https://sources.buildroot.net/wayland/wayland-1.23.1.tar.xz",
+      "https://sources.buildroot.net/wayland-1.23.1.tar.xz"
+    ]
+  },
+  "wayland-protocols-1.39.tar.xz": {
+    "algo": "sha512",
+    "checksum": "480a195ec0846400d93160e3d0a7ba12948ed841835ee4661f54b0101ae0027affd9c0f660a73244786fecd70e4f609830489a6b95e00d750cf2379734aacbe0",
+    "uris": [
+      "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.39/downloads/wayland-protocols-1.39.tar.xz",
+      "https://sources.buildroot.net/wayland-protocols/wayland-protocols-1.39.tar.xz",
+      "https://sources.buildroot.net/wayland-protocols-1.39.tar.xz"
+    ]
+  },
+  "weston-14.0.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "2d782f98f28b39b990acecfc885f62ab34c9cdd22ef06b09c5d8df792112c47b365f89c2bf05d871e36ddfb4c49aa7e6d05ff60fe67a2657727162e4f564a412",
+    "uris": [
+      "https://gitlab.freedesktop.org/wayland/weston/-/releases/14.0.1/downloads/weston-14.0.1.tar.xz",
+      "https://sources.buildroot.net/weston/weston-14.0.1.tar.xz",
+      "https://sources.buildroot.net/weston-14.0.1.tar.xz"
+    ]
+  },
+  "wheel-0.45.1.tar.gz": {
+    "algo": "sha256",
+    "checksum": "661e1abd9198507b1409a20c02106d9670b2576e916d58f520316666abca6729",
+    "uris": [
+      "https://files.pythonhosted.org/packages/8a/98/2d9906746cdc6a6ef809ae6338005b3f21bb568bea3165cfc6a243fdc25c/wheel-0.45.1.tar.gz",
+      "https://sources.buildroot.net/python-wheel/wheel-0.45.1.tar.gz",
+      "https://sources.buildroot.net/wheel-0.45.1.tar.gz"
+    ]
+  },
+  "xcb-proto-1.15.2.tar.xz": {
+    "algo": "sha512",
+    "checksum": "9d0b2f0a4dbbf2d64e32ff4658d1663e13d7e5f1bffc1e8d45be7b9dd5bab46e29fc1c2f6e66a7a569e374ba6756faf3c39b0b5e5560df6d7f8b68beec97659d",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz",
+      "https://sources.buildroot.net/xcb-proto/xcb-proto-1.15.2.tar.xz",
+      "https://sources.buildroot.net/xcb-proto-1.15.2.tar.xz"
+    ]
+  },
+  "xkbcomp-1.4.6.tar.xz": {
+    "algo": "sha512",
+    "checksum": "90e69dd1c78c28f77a5acc7821b43afec1b9ac4895bc6f3462b4902baaadc26f3869da69e3bd023b4bc74adb5f1be0c43ca24b3dab37ac9a479c5622684baa81",
+    "uris": [
+      "http://xorg.freedesktop.org/releases/individual/app/xkbcomp-1.4.6.tar.xz",
+      "https://sources.buildroot.net/xapp_xkbcomp/xkbcomp-1.4.6.tar.xz",
+      "https://sources.buildroot.net/xkbcomp-1.4.6.tar.xz"
+    ]
+  },
+  "xkeyboard-config-2.38.tar.xz": {
+    "algo": "sha256",
+    "checksum": "0690a91bab86b18868f3eee6d41e9ec4ce6894f655443d490a2184bfac56c872",
+    "uris": [
+      "https://www.x.org/releases/individual/data/xkeyboard-config/xkeyboard-config-2.38.tar.xz",
+      "https://sources.buildroot.net/xkeyboard-config/xkeyboard-config-2.38.tar.xz",
+      "https://sources.buildroot.net/xkeyboard-config-2.38.tar.xz"
+    ]
+  },
+  "xorgproto-2024.1.tar.xz": {
+    "algo": "sha512",
+    "checksum": "63955cb604ff831575af2193548857c1b99e52d00206ea9421ce99e145094bcd907388c4574bc32174a01cbe2c940b0377bf75ae7d2c0f953157dc9c32e5a07f",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.xz",
+      "https://sources.buildroot.net/xorgproto/xorgproto-2024.1.tar.xz",
+      "https://sources.buildroot.net/xorgproto-2024.1.tar.xz"
+    ]
+  },
+  "xtrans-1.5.0.tar.xz": {
+    "algo": "sha512",
+    "checksum": "e8091f11d4ad2b14e01de3eac56bdf2267ea26687ce66e3056374d0d02e049480c0b27c482f8828a0efd086f1e4c485108ca4dce3f83d66c1896effa3b38b228",
+    "uris": [
+      "https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.5.0.tar.xz",
+      "https://sources.buildroot.net/xlib_xtrans/xtrans-1.5.0.tar.xz",
+      "https://sources.buildroot.net/xtrans-1.5.0.tar.xz"
+    ]
+  },
+  "zlib-1.3.1.tar.xz": {
+    "algo": "sha256",
+    "checksum": "38ef96b8dfe510d42707d9c781877914792541133e1870841463bfa73f883e32",
+    "uris": [
+      "https://www.zlib.net/zlib-1.3.1.tar.xz",
+      "https://sources.buildroot.net/libzlib/zlib-1.3.1.tar.xz",
+      "https://sources.buildroot.net/zlib-1.3.1.tar.xz"
+    ]
+  }
+}
