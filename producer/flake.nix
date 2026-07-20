@@ -120,7 +120,7 @@
                 mkdir -p "$PREBUILT_DIR" "$WORKDIR"
 
                 cd "$BUILDROOT_DIR"
-                for p in ${self}/producer/buildroot/patches/*.patch; do
+                for p in ${self}/buildroot/patches/*.patch; do
                   echo "Applying $p"
                   patch -p1 < "$p"
                 done
@@ -128,7 +128,7 @@
                 ${
                   if defconfig != null then
                     ''
-                      cp ${self}/producer/buildroot/configs/${defconfig} .config
+                      cp ${self}/buildroot/configs/${defconfig} .config
                       make olddefconfig
                     ''
                   else
@@ -138,7 +138,7 @@
                 }
 
                 ${pkgs.lib.optionalString extraUtilsConfig ''
-                  bash ${self}/producer/buildroot/configs/common_linux_userland.sh
+                  bash ${self}/buildroot/configs/common_linux_userland.sh
                   make olddefconfig
 
                   toolchain_gxx="$BUILDROOT_DIR/output/host/bin/aarch64-buildroot-linux-musl-g++"
