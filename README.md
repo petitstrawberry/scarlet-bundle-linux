@@ -109,6 +109,26 @@ will be populated with real hashes when `v0.1.0` is cut (Step 5).
 History extracted from Scarlet's `bundles/linux` (and its former
 `tools/linux` location) via `git filter-repo`. Producer environment is
 pinned via `producer/flake.nix` (Buildroot 2025.02.6 + nixpkgs). Archive-
-kind bundle manifests are in place pending the first release. Release
-pipeline, nightly automation, and legal-info collection remain as follow-
-up steps.
+kind bundle manifests are in place pending the first release. The manual
+release pipeline is in place; nightly automation and legal-info collection
+remain as follow-up steps.
+
+## Cutting a release
+
+1. Open the **Build release** workflow in GitHub Actions and run it manually
+   with a version such as `v0.1.0`. The `architectures` input defaults to
+   `riscv64,aarch64` and can be narrowed for a single-architecture rebuild.
+2. The workflow builds each selected rootfs on a Linux runner. Its first Nix
+   build discovers the fixed-output hash, updates the runner's temporary
+   `producer/flake.nix`, and retries with the discovered value.
+3. Each build uploads a versioned rootfs archive and a
+   `manifest-<arch>.toml` fragment containing the GitHub Release URL and its
+   `sha256:<hex>` value. The workflow creates a draft release with those files.
+4. Review and merge the follow-up pull request that pins the discovered hash
+   in `producer/flake.nix`. Use the manifest fragments to replace the matching
+   TODO values in `bundles/rootfs/bundle.toml` as a separate release update.
+
+For a local Linux rerun, use `scripts/bootstrap-hash.sh ./producer
+rootfs-<arch>` to discover the fixed-output hash and
+`scripts/compute-artifact-hash.sh <file>` to format an artifact hash for a
+cargo-scarlet manifest.
