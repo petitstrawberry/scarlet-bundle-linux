@@ -93,6 +93,13 @@
 
               nativeBuildInputs = hostTools;
 
+              # All sources are wired explicitly inside buildPhase (Buildroot via
+              # the flake input, scarlet-bundle-linux patches via ${self}). Skip
+              # the default unpack/configure phases so stdenv does not look for
+              # $src or a ./configure script.
+              dontUnpack = true;
+              dontConfigure = true;
+
               BUILDROOT_VERSION = buildrootVersion;
               ARCH = arch;
               SCARLET_BUNDLE_SKIP_HOST_CHECK = "1";
