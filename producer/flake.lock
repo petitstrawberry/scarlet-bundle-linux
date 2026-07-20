@@ -1,0 +1,45 @@
+{
+  "nodes": {
+    "buildroot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1757446063,
+        "narHash": "sha256-golm280wFwFLVTzdL5o+zcqY1EslnoHM1fvuILKpKVU=",
+        "owner": "buildroot.org",
+        "repo": "buildroot",
+        "rev": "6360671c2801531e41ea52fff05829238dd3332f",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "buildroot.org",
+        "ref": "2025.02.6",
+        "repo": "buildroot",
+        "type": "gitlab"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1784494590,
+        "narHash": "sha256-Gn7vGw9aIyoJy7GkNbsHXvSkvXeNLoP9ZiK1RtS/0M8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "472e4428b5aee60be7ac35c03662ebb36c901edd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "buildroot": "buildroot",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

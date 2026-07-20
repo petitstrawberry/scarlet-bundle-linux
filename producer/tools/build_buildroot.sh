@@ -220,7 +220,7 @@ build_riscv64() {
 
     pushd "${BUILDROOT_DIR}" >/dev/null
     if [[ ! -f .config ]]; then
-        cp "${REPO_ROOT}/docker/.config" .config
+        cp "${REPO_ROOT}/producer/buildroot/configs/scarlet_riscv64_defconfig" .config
     fi
     make olddefconfig
     make -j "${MAKE_JOBS}"
