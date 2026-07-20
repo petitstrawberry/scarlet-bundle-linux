@@ -23,6 +23,12 @@ produces Linux binaries, so macOS hosts must use a Linux remote builder or CI.
 Buildroot package downloads are pinned in per-architecture JSON source locks,
 which normal rootfs builds only consume.
 
+The Linux builder must allow the nested user namespaces used by Nixpkgs'
+`buildFHSEnv`/bubblewrap wrapper. GitHub-hosted Ubuntu runners enable this in
+the workflows before invoking Nix. Restricted builders can run the same flake
+output inside a privileged Linux Docker container; this changes the transport,
+not the package definition.
+
 ### Refreshing Buildroot source locks
 
 Refresh source locks only for intentional Buildroot configuration or package
