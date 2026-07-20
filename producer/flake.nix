@@ -63,6 +63,7 @@
               pkgs.bc
               pkgs.gawk
               pkgs.dtc
+              pkgs.util-linux
               pkgs.gcc
               pkgs.pkg-config
               pkgs.autoconf
