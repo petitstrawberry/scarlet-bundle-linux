@@ -17,6 +17,46 @@
         "type": "gitlab"
       }
     },
+    "buildroot-nix": {
+      "inputs": {
+        "buildroot": "buildroot_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1770501960,
+        "narHash": "sha256-LWo0eSAfYnAmIP6CdQWx/HWBDLq0JAb+35zGV0CRwqQ=",
+        "owner": "velentr",
+        "repo": "buildroot.nix",
+        "rev": "a9090cd64ce2b595a68b2acf2f13463b75673d80",
+        "type": "github"
+      },
+      "original": {
+        "owner": "velentr",
+        "repo": "buildroot.nix",
+        "rev": "a9090cd64ce2b595a68b2acf2f13463b75673d80",
+        "type": "github"
+      }
+    },
+    "buildroot_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768938685,
+        "narHash": "sha256-9YPQ7vB0W+sd/uHoyn+NDwsq1kv39hglh+8u8bJaG20=",
+        "owner": "buildroot.org",
+        "repo": "buildroot",
+        "rev": "1bf78b41855b907afd86327b1b96268c80ec3b44",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "buildroot.org",
+        "ref": "2025.11.1",
+        "repo": "buildroot",
+        "type": "gitlab"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1784494590,
@@ -36,7 +76,29 @@
     "root": {
       "inputs": {
         "buildroot": "buildroot",
+        "buildroot-nix": "buildroot-nix",
         "nixpkgs": "nixpkgs"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "buildroot-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770228511,
+        "narHash": "sha256-wQ6NJSuFqAEmIg2VMnLdCnUc0b7vslUohqqGGD+Fyxk=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "337a4fe074be1042a35086f15481d763b8ddc0e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
       }
     }
   },
