@@ -18,7 +18,7 @@ for the per-package license tracking policy.
 ```
 scarlet-bundle-linux/
 ├── producer/                       # build-time only (not consumed by Scarlet users)
-│   ├── flake.nix                   # Nix toolchain pin (placeholder; Step 3)
+│   ├── flake.nix                   # Nix toolchain pin (Buildroot 2025.02.6)
 │   ├── tools/                      # build scripts
 │   │   ├── prepare.sh              # orchestrator
 │   │   ├── build_buildroot.sh
@@ -30,7 +30,7 @@ scarlet-bundle-linux/
 │   │   └── deploy_rootfs.sh
 │   ├── tests/
 │   │   └── deploy_rootfs_test.sh
-│   ├── buildroot/                  # Buildroot configs and patches (Step 3)
+│   ├── buildroot/                  # Buildroot configs and patches
 │   ├── legal-info/                 # license collection automation (Step 7)
 │   └── output/                     # local deploy target (gitignored payloads)
 │       └── rootfs/{system,data}/linux-{arch}/
@@ -65,15 +65,30 @@ tag. Daily snapshots roll under a separate `nightly` tag. See
 
 ## Relationship to Scarlet
 
-Scarlet consumes bundles from this repository via `cargo-scarlet`. The
-rootfs bundle currently uses `kind = "copy"` layers against the locally
-deployed tree under `producer/output/`. The migration plan switches every
-bundle to `kind = "archive"` layers pointing at GitHub Releases URLs, so
-clean Scarlet clones no longer need to run Buildroot.
+Scarlet consumes bundles from this repository via `cargo-scarlet`. Every
+bundle uses `kind = "archive"` layers pinned by URL and SHA-256 against
+assets published on GitHub Releases, so clean Scarlet clones no longer
+need to run Buildroot. The per-arch SHA-256 map lets a single `bundle.toml`
+cover both `aarch64` and `riscv64`:
+
+```toml
+[[layers]]
+kind = "archive"
+url = "https://github.com/petitstrawberry/scarlet-bundle-linux/releases/download/v0.1.0/rootfs-{arch}-v0.1.0.tar.zst"
+sha256 = { aarch64 = "sha256:...", riscv64 = "sha256:..." }
+format = "tar-zst"
+strip_components = 1
+to = "/system/linux-{arch}"
+```
+
+The `sha256` placeholders in the current manifests are TODO markers. They
+will be populated with real hashes when `v0.1.0` is cut (Step 5).
 
 ## Status
 
 History extracted from Scarlet's `bundles/linux` (and its former
-`tools/linux` location) via `git filter-repo`. Producer flake, Buildroot
-configs, release pipeline, and the archive-kind bundle manifests will
-land as follow-up commits.
+`tools/linux` location) via `git filter-repo`. Producer environment is
+pinned via `producer/flake.nix` (Buildroot 2025.02.6 + nixpkgs). Archive-
+kind bundle manifests are in place pending the first release. Release
+pipeline, nightly automation, and legal-info collection remain as follow-
+up steps.
