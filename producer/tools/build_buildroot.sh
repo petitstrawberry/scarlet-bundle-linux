@@ -50,7 +50,9 @@ case "${ARCH}" in
         ;;
 esac
 
-require_supported_host
+if [[ "${SCARLET_BUNDLE_SKIP_HOST_CHECK:-0}" != "1" ]]; then
+    require_supported_host
+fi
 : "${MAKE_JOBS:=$(nproc)}"
 
 download_file() {
@@ -102,117 +104,7 @@ ensure_buildroot_release() {
 }
 
 configure_common_linux_userland() {
-    utils/config --enable BR2_TOOLCHAIN_BUILDROOT_MUSL
-    utils/config --enable BR2_TOOLCHAIN_BUILDROOT_CXX
-    utils/config --enable BR2_GCC_VERSION_13_X
-    utils/config --disable BR2_GCC_VERSION_14_X
-    utils/config --enable BR2_TARGET_ROOTFS_TAR
-    utils/config --disable BR2_TARGET_ROOTFS_EXT2
-    utils/config --disable BR2_LINUX_KERNEL
-    utils/config --disable BR2_PACKAGE_HOST_QEMU
-    utils/config --disable BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE
-    utils/config --enable BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
-    utils/config --set-str BR2_ROOTFS_POST_IMAGE_SCRIPT ""
-    utils/config --set-str BR2_ROOTFS_POST_SCRIPT_ARGS ""
-
-    utils/config --enable BR2_PACKAGE_CAIRO
-    utils/config --enable BR2_PACKAGE_CAIRO_PNG
-    utils/config --enable BR2_PACKAGE_CAIRO_ZLIB
-    utils/config --enable BR2_PACKAGE_DBUS
-    utils/config --enable BR2_PACKAGE_DESKTOP_FILE_UTILS
-    utils/config --enable BR2_PACKAGE_EUDEV
-    utils/config --enable BR2_PACKAGE_EUDEV_MODULE_LOADING
-    utils/config --enable BR2_PACKAGE_EUDEV_ENABLE_HWDB
-    utils/config --enable BR2_PACKAGE_FILE
-    utils/config --enable BR2_PACKAGE_GUMBO_PARSER
-    utils/config --enable BR2_PACKAGE_HICOLOR_ICON_THEME
-    utils/config --enable BR2_PACKAGE_JBIG2DEC
-    utils/config --enable BR2_PACKAGE_JSON_GLIB
-    utils/config --enable BR2_PACKAGE_JPEG
-    utils/config --disable BR2_PACKAGE_JPEG_TURBO
-    utils/config --enable BR2_PACKAGE_LCMS2
-    utils/config --enable BR2_PACKAGE_LIBERATION
-    utils/config --enable BR2_PACKAGE_LIBERATION_MONO
-    utils/config --enable BR2_PACKAGE_LIBERATION_SANS
-    utils/config --enable BR2_PACKAGE_LIBERATION_SERIF
-    utils/config --enable BR2_PACKAGE_LIBEVDEV
-    utils/config --enable BR2_PACKAGE_LIBGLIB2
-    utils/config --enable BR2_PACKAGE_LIBGTK3
-    utils/config --enable BR2_PACKAGE_LIBGTK3_WAYLAND
-    utils/config --enable BR2_PACKAGE_LIBGTK3_DEMO
-    utils/config --disable BR2_PACKAGE_LIBGTK3_BROADWAY
-    utils/config --enable BR2_PACKAGE_LIBGTK4
-    utils/config --enable BR2_PACKAGE_LIBGTK4_WAYLAND
-    utils/config --enable BR2_PACKAGE_LIBGTK4_DEMO
-    utils/config --disable BR2_PACKAGE_LIBGTK4_BROADWAY
-    utils/config --enable BR2_PACKAGE_LIBINPUT
-    utils/config --enable BR2_PACKAGE_LIBJPEG
-    utils/config --enable BR2_PACKAGE_LIBPCIACCESS
-    utils/config --enable BR2_PACKAGE_LIBSHA1
-    utils/config --enable BR2_PACKAGE_LIBTIRPC
-    utils/config --enable BR2_PACKAGE_LTRIS
-    utils/config --disable BR2_PACKAGE_LTRIS_AUDIO
-    utils/config --enable BR2_PACKAGE_LUA
-    utils/config --enable BR2_PACKAGE_LUA_5_4
-    utils/config --enable BR2_PACKAGE_MESA3D
-    utils/config --enable BR2_PACKAGE_MESA3D_DEMOS
-    utils/config --enable BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
-    utils/config --enable BR2_PACKAGE_MESA3D_GBM
-    utils/config --enable BR2_PACKAGE_MESA3D_LLVM
-    utils/config --enable BR2_PACKAGE_MESA3D_OPENGL_EGL
-    utils/config --enable BR2_PACKAGE_MESA3D_OPENGL_ES
-    utils/config --enable BR2_PACKAGE_MICROPYTHON
-    utils/config --enable BR2_PACKAGE_MTDEV
-    utils/config --enable BR2_PACKAGE_NANO
-    utils/config --enable BR2_PACKAGE_NANO_TINY
-    utils/config --enable BR2_PACKAGE_OPENJPEG
-    utils/config --enable BR2_PACKAGE_POPPLER
-    utils/config --enable BR2_PACKAGE_POPPLER_QT5
-    utils/config --enable BR2_PACKAGE_QT5
-    utils/config --enable BR2_PACKAGE_QT5BASE
-    utils/config --enable BR2_PACKAGE_QT5BASE_EXAMPLES
-    utils/config --enable BR2_PACKAGE_QT5BASE_GUI
-    utils/config --enable BR2_PACKAGE_QT5BASE_LINUXFB
-    utils/config --enable BR2_PACKAGE_QT5BASE_NETWORK
-    utils/config --enable BR2_PACKAGE_QT5BASE_PRINTSUPPORT
-    utils/config --enable BR2_PACKAGE_QT5BASE_TEST
-    utils/config --enable BR2_PACKAGE_QT5BASE_WIDGETS
-    utils/config --enable BR2_PACKAGE_QT5BASE_XML
-    utils/config --enable BR2_PACKAGE_QT5WAYLAND
-    utils/config --enable BR2_PACKAGE_SDL
-    utils/config --enable BR2_PACKAGE_SDL_FBCON
-    utils/config --disable BR2_PACKAGE_SDL_MIXER
-    utils/config --enable BR2_PACKAGE_SEATD
-    utils/config --enable BR2_PACKAGE_SEATD_BUILTIN
-    utils/config --enable BR2_PACKAGE_SHARED_MIME_INFO
-    utils/config --enable BR2_PACKAGE_SL
-    utils/config --enable BR2_PACKAGE_SQLITE
-    utils/config --enable BR2_PACKAGE_TIFF
-    utils/config --enable BR2_PACKAGE_TIFF_CCITT
-    utils/config --enable BR2_PACKAGE_TIFF_JPEG
-    utils/config --enable BR2_PACKAGE_TIFF_LOGLUV
-    utils/config --enable BR2_PACKAGE_TIFF_LZW
-    utils/config --enable BR2_PACKAGE_TIFF_MDI
-    utils/config --enable BR2_PACKAGE_TIFF_NEXT
-    utils/config --enable BR2_PACKAGE_TIFF_OLD_JPEG
-    utils/config --enable BR2_PACKAGE_TIFF_PACKBITS
-    utils/config --enable BR2_PACKAGE_TIFF_PIXARLOG
-    utils/config --enable BR2_PACKAGE_TIFF_THUNDER
-    utils/config --enable BR2_PACKAGE_TIFF_ZLIB
-    utils/config --enable BR2_PACKAGE_WAYLAND
-    utils/config --enable BR2_PACKAGE_WAYLAND_PROTOCOLS
-    utils/config --enable BR2_PACKAGE_WESTON
-    utils/config --enable BR2_PACKAGE_WESTON_DEFAULT_HEADLESS
-    utils/config --enable BR2_PACKAGE_WESTON_DEMO_CLIENTS
-    utils/config --enable BR2_PACKAGE_WESTON_HEADLESS
-    utils/config --enable BR2_PACKAGE_WESTON_SHELL_DESKTOP
-    utils/config --disable BR2_PACKAGE_WESTON_SHELL_FULLSCREEN
-    utils/config --disable BR2_PACKAGE_WESTON_SHELL_IVI
-    utils/config --disable BR2_PACKAGE_WESTON_SHELL_KIOSK
-    utils/config --disable BR2_PACKAGE_WESTON_SCREENSHARE
-    utils/config --enable BR2_PACKAGE_WESTON_SIMPLE_CLIENTS
-    utils/config --enable BR2_PACKAGE_XKEYBOARD_CONFIG
-    utils/config --set-str BR2_PACKAGE_WESTON_DEFAULT_COMPOSITOR "headless"
+    source "${REPO_ROOT}/producer/buildroot/configs/common_linux_userland.sh"
 }
 
 build_riscv64() {

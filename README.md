@@ -8,6 +8,26 @@ runtime bundle manifests used to generate per-arch Linux root filesystems
 and auxiliary user-space artifacts (Mozc, kvmtool, demo applications, SHV
 guest kernel/initramfs) for Scarlet.
 
+## Building artifacts via Nix
+
+On a Linux host, Buildroot root filesystems can be built from the producer
+flake:
+
+```bash
+cd producer
+nix build .#rootfs-riscv64
+nix build .#rootfs-aarch64
+```
+
+The resulting archive is available as `result/rootfs-{arch}.tar.zst`. Buildroot
+produces Linux binaries, so macOS hosts must use a Linux remote builder or CI.
+The derivations use fixed-output hashes: the first real build intentionally
+fails with `lib.fakeSha256`, after which Nix prints the actual SHA-256. Paste
+that value into the derivation's `outputHash` field in `producer/flake.nix`,
+commit it, and rebuild to pin the artifact. Buildroot is not perfectly
+deterministic; if a rebuild produces a different hash, treat the artifact as
+superseded and update the pin.
+
 ## License
 
 GPL-2.0-only. See [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md)
