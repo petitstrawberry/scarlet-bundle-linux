@@ -42,6 +42,7 @@
           inherit pkgs;
           src = buildrootSource;
           inherit defconfig lockfile;
+          nativeBuildInputs = [ pkgs.git ];
         };
       riscv64Buildroot = mkBuildroot {
         arch = "riscv64";
