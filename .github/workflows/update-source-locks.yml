@@ -1,0 +1,43 @@
+name: Update Buildroot source locks
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Generate source lock (${{ matrix.arch }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - riscv64
+          - aarch64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Generate Buildroot source lock
+        working-directory: producer
+        run: |
+          nix build .#lock-${{ matrix.arch }}
+          staging_dir="$RUNNER_TEMP/buildroot-source-locks"
+          mkdir -p "$staging_dir"
+          cp --remove-destination result "$staging_dir/${{ matrix.arch }}.json"
+
+      - name: Upload Buildroot source lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildroot-source-lock-${{ matrix.arch }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/buildroot-source-locks/${{ matrix.arch }}.json

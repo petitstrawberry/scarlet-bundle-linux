@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   build:
@@ -30,20 +29,32 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate checked-in Buildroot source lock
+        working-directory: producer
+        run: |
+          python3 - "buildroot/locks/${{ matrix.arch }}.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+          try:
+              lock = json.loads(path.read_text())
+          except (OSError, json.JSONDecodeError) as error:
+              raise SystemExit(f"{path}: invalid source lock: {error}")
+
+          if not isinstance(lock, dict) or not lock:
+              raise SystemExit(
+                  f"{path}: source lock must be a non-empty JSON object; "
+                  "run Update Buildroot source locks, review its artifact, and commit it before releasing"
+              )
+          PY
+
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
-
-      - name: Configure Git identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Bootstrap the fixed-output hash
-        working-directory: producer
-        run: ../scripts/bootstrap-hash.sh ./ rootfs-${{ matrix.arch }}
 
       - name: Materialize versioned release artifact
         working-directory: producer
@@ -81,19 +92,6 @@ jobs:
           path: |
             producer/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
             producer/manifest-${{ matrix.arch }}.toml
-
-      - name: Open fixed-output hash pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          add-paths: producer/flake.nix
-          branch: release/pin-rootfs-${{ matrix.arch }}-hash
-          commit-message: "chore: pin rootfs-${{ matrix.arch }} fixed-output hash"
-          title: "Pin rootfs-${{ matrix.arch }} fixed-output hash"
-          body: |
-            The release build for `${{ inputs.version }}` discovered this
-            fixed-output hash while building `rootfs-${{ matrix.arch }}`.
-          delete-branch: true
 
   release:
     name: Create draft release
