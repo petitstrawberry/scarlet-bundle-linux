@@ -94,6 +94,7 @@
               name = "scarlet-bundle-linux-rootfs-${arch}";
 
               nativeBuildInputs = hostTools;
+              hardeningDisable = [ "format" ];
 
               # All sources are wired explicitly inside buildPhase (Buildroot via
               # the flake input, scarlet-bundle-linux patches via ${self}). Skip
