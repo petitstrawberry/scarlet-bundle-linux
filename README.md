@@ -11,22 +11,40 @@ guest kernel/initramfs) for Scarlet.
 ## Building artifacts via Nix
 
 On a Linux host, Buildroot root filesystems can be built from the producer
-flake:
+flake after the matching source lock has been reviewed and committed:
 
 ```bash
 cd producer
 nix build .#rootfs-riscv64
-nix build .#rootfs-aarch64
 ```
 
 The resulting archive is available as `result/rootfs-{arch}.tar.zst`. Buildroot
 produces Linux binaries, so macOS hosts must use a Linux remote builder or CI.
-The derivations use fixed-output hashes: the first real build intentionally
-fails with `lib.fakeSha256`, after which Nix prints the actual SHA-256. Paste
-that value into the derivation's `outputHash` field in `producer/flake.nix`,
-commit it, and rebuild to pin the artifact. Buildroot is not perfectly
-deterministic; if a rebuild produces a different hash, treat the artifact as
-superseded and update the pin.
+Buildroot package downloads are pinned in per-architecture JSON source locks,
+which normal rootfs builds only consume.
+
+### Refreshing Buildroot source locks
+
+Refresh source locks only for intentional Buildroot configuration or package
+changes, including initial bootstrap. Run the manual **Update Buildroot source
+locks** workflow; it generates the `buildroot-source-lock-riscv64` and
+`buildroot-source-lock-aarch64` artifacts without changing the repository.
+Download the artifacts, replace the corresponding files in
+`producer/buildroot/locks/`, review them, and commit them before running a
+normal rootfs build or release.
+
+For a local Linux refresh, generate each lock and copy it into the checked-in
+location before review and commit:
+
+```bash
+cd producer
+nix build .#lock-riscv64
+cp --remove-destination result buildroot/locks/riscv64.json
+```
+
+Repeat with `aarch64` as needed. The current `{}` placeholders cannot be used
+for a normal rootfs or release build; the release workflow rejects empty or
+invalid source locks before starting the expensive build.
 
 ## License
 
@@ -50,7 +68,7 @@ scarlet-bundle-linux/
 │   │   └── deploy_rootfs.sh
 │   ├── tests/
 │   │   └── deploy_rootfs_test.sh
-│   ├── buildroot/                  # Buildroot configs and patches
+│   ├── buildroot/                  # Buildroot configs, source locks, and patches
 │   ├── legal-info/                 # license collection automation (Step 7)
 │   └── output/                     # local deploy target (gitignored payloads)
 │       └── rootfs/{system,data}/linux-{arch}/
@@ -116,19 +134,19 @@ remain as follow-up steps.
 ## Cutting a release
 
 1. Open the **Build release** workflow in GitHub Actions and run it manually
-   with a version such as `v0.1.0`. The `architectures` input defaults to
-   `riscv64,aarch64` and can be narrowed for a single-architecture rebuild.
-2. The workflow builds each selected rootfs on a Linux runner. Its first Nix
-   build discovers the fixed-output hash, updates the runner's temporary
-   `producer/flake.nix`, and retries with the discovered value.
+   with a version such as `v0.1.0`. The workflow builds both `riscv64` and
+   `aarch64` on Linux runners.
+2. The workflow validates and consumes the checked-in source lock for each
+   architecture; it does not refresh or modify locks. Use **Update Buildroot
+   source locks** and commit its reviewed artifacts before this step when a
+   lock refresh is needed.
 3. Each build uploads a versioned rootfs archive and a
    `manifest-<arch>.toml` fragment containing the GitHub Release URL and its
    `sha256:<hex>` value. The workflow creates a draft release with those files.
-4. Review and merge the follow-up pull request that pins the discovered hash
-   in `producer/flake.nix`. Use the manifest fragments to replace the matching
-   TODO values in `bundles/rootfs/bundle.toml` as a separate release update.
+4. Use the manifest fragments to replace the matching TODO values in
+   `bundles/rootfs/bundle.toml` as a separate release update.
 
-For a local Linux rerun, use `scripts/bootstrap-hash.sh ./producer
-rootfs-<arch>` to discover the fixed-output hash and
+For a local Linux rerun with committed locks, use `nix build .#rootfs-<arch>`.
+Use
 `scripts/compute-artifact-hash.sh <file>` to format an artifact hash for a
 cargo-scarlet manifest.
