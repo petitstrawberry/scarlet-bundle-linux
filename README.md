@@ -141,7 +141,9 @@ remain as follow-up steps.
 
 1. Open the **Build release** workflow in GitHub Actions and run it manually
    with a version such as `v0.1.0`. The workflow builds both `riscv64` and
-   `aarch64` on Linux runners.
+   `aarch64` on Linux runners. Leave `publish` disabled for build-only
+   validation; enable it only when the successful artifacts should be attached
+   to a draft GitHub Release.
 2. The workflow validates and consumes the checked-in source lock for each
    architecture; it does not refresh or modify locks. Use **Update Buildroot
    source locks** and commit its reviewed artifacts before this step when a
