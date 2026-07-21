@@ -30,7 +30,7 @@
         patches = [
           ./buildroot/patches/0001-exclude-listmount-statmount-for-musl.patch
           ./buildroot/patches/0002-libxml-parser-perl-set-runtime-library-path.patch
-          ./buildroot/patches/0003-intltool-set-perl-module-path.patch
+          ./buildroot/patches/0003-export-host-library-path.patch
         ];
       };
       mkBuildroot =

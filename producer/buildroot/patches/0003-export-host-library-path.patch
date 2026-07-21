@@ -1,0 +1,4 @@
+--- a/package/Makefile.in
++++ b/package/Makefile.in
+@@ -276,0 +277 @@ export PERL5LIB=$(HOST_DIR)/lib/perl
++export LD_LIBRARY_PATH := $(HOST_DIR)/lib
