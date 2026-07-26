@@ -1,6 +1,6 @@
---- a/package/intltool/intltool.mk
-+++ b/package/intltool/intltool.mk
-@@ -12,0 +13,3 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
-+HOST_INTLTOOL_CONF_ENV += \
-+	PERL5LIB=$(HOST_DIR)/lib/perl \
-+	LD_LIBRARY_PATH=$(HOST_DIR)/lib
+--- a/package/Makefile.in
++++ b/package/Makefile.in
+@@ -319,0 +320 @@ TARGET_CONFIGURE_OPTS = \
++	LD_LIBRARY_PATH="$(HOST_DIR)/lib$${LD_LIBRARY_PATH:+:$${LD_LIBRARY_PATH}}" \
+@@ -347,0 +349 @@ HOST_CONFIGURE_OPTS = \
++	LD_LIBRARY_PATH="$(HOST_DIR)/lib$${LD_LIBRARY_PATH:+:$${LD_LIBRARY_PATH}}" \
