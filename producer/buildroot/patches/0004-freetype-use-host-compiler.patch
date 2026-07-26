@@ -1,0 +1,4 @@
+--- a/package/freetype/freetype.mk
++++ b/package/freetype/freetype.mk
+@@ -11,0 +12 @@ FREETYPE_MAKE_OPTS = CCexe="$(HOSTCC)"
++FREETYPE_CONF_ENV += CC_BUILD="$(HOSTCC)"

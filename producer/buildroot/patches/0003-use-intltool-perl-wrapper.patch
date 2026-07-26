@@ -1,27 +1,6 @@
---- a/package/Makefile.in
-+++ b/package/Makefile.in
-@@ -320 +320 @@ TARGET_CONFIGURE_OPTS = \
--	INTLTOOL_PERL=$(PERL)
-+	INTLTOOL_PERL=$(HOST_DIR)/bin/intltool-perl
-@@ -348 +348 @@ HOST_CONFIGURE_OPTS = \
--	INTLTOOL_PERL=$(PERL)
-+	INTLTOOL_PERL=$(HOST_DIR)/bin/intltool-perl
 --- a/package/intltool/intltool.mk
 +++ b/package/intltool/intltool.mk
-@@ -12,0 +13,15 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
+@@ -12,0 +13,3 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
 +HOST_INTLTOOL_CONF_ENV += \
 +	PERL5LIB=$(HOST_DIR)/lib/perl \
 +	LD_LIBRARY_PATH=$(HOST_DIR)/lib
-+
-+define HOST_INTLTOOL_CREATE_PERL_WRAPPER
-+	$(Q)mkdir -p $(HOST_DIR)/bin
-+	$(Q)printf '%s\n' \
-+		'#!/bin/sh' \
-+		'export PERL5LIB="$(HOST_DIR)/lib/perl"' \
-+		'export LD_LIBRARY_PATH="$(HOST_DIR)/lib"' \
-+		'exec "$(PERL)" "$$@"' \
-+		> $(HOST_DIR)/bin/intltool-perl
-+	$(Q)chmod 0755 $(HOST_DIR)/bin/intltool-perl
-+endef
-+
-+HOST_INTLTOOL_PRE_CONFIGURE_HOOKS += HOST_INTLTOOL_CREATE_PERL_WRAPPER
