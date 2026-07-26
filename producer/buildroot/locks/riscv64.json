@@ -889,6 +889,15 @@
       "https://sources.buildroot.net/queue.h"
     ]
   },
+  "rust-1.82.0-aarch64-unknown-linux-gnu.tar.xz": {
+    "algo": "sha256",
+    "checksum": "99acf175be33bd96ac82d644125d0e2acc6962d61ee64851edc7d8ba3bd23ca4",
+    "uris": [
+      "https://static.rust-lang.org/dist/rust-1.82.0-aarch64-unknown-linux-gnu.tar.xz",
+      "https://sources.buildroot.net/rust-bin/rust-1.82.0-aarch64-unknown-linux-gnu.tar.xz",
+      "https://sources.buildroot.net/rust-1.82.0-aarch64-unknown-linux-gnu.tar.xz"
+    ]
+  },
   "rust-1.82.0-x86_64-unknown-linux-gnu.tar.xz": {
     "algo": "sha256",
     "checksum": "8a6bf24ca1fee2bd861590431c7954674191a0c0dfa0af4169731bc1459cf58a",
