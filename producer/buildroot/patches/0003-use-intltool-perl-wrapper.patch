@@ -8,7 +8,11 @@
 +	INTLTOOL_PERL=$(HOST_DIR)/bin/intltool-perl
 --- a/package/intltool/intltool.mk
 +++ b/package/intltool/intltool.mk
-@@ -12,0 +13,12 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
+@@ -12,0 +13,15 @@ HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
++HOST_INTLTOOL_CONF_ENV += \
++	PERL5LIB=$(HOST_DIR)/lib/perl \
++	LD_LIBRARY_PATH=$(HOST_DIR)/lib
++
 +define HOST_INTLTOOL_CREATE_PERL_WRAPPER
 +	$(Q)mkdir -p $(HOST_DIR)/bin
 +	$(Q)printf '%s\n' \
