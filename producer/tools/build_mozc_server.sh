@@ -22,6 +22,7 @@ set -euo pipefail
 #  MOZC_UT_GENERATE_LATEST - generate latest UT dictionaries, defaults to 0
 #  MOZC_HOST_PYTHON - host Python used for Mozc source patches and UT dictionary generation
 #  MUSL_FTS_REPO - musl-fts source repository
+#  MUSL_FTS_REV - pinned musl-fts branch, tag, or commit
 #  MUSL_FTS_DIR - musl-fts checkout directory
 #  MOZC_UPDATE_DEPS_ARGS - if set, run build_tools/update_deps.py with these arguments
 #  MOZC_ALLOW_ROOT_SERVER - allow mozc_server to run as uid 0, defaults to 1
@@ -180,6 +181,7 @@ build_musl_fts_if_needed() {
 
     echo "==> Building musl-fts for ${ARCH}..."
     clone_or_update "${MUSL_FTS_REPO}" "${MUSL_FTS_DIR}"
+    checkout_optional_rev "${MUSL_FTS_DIR}" "${MUSL_FTS_REV:-}"
 
     pushd "${MUSL_FTS_DIR}" >/dev/null
     ./bootstrap.sh
@@ -556,7 +558,6 @@ build_args=(
     "--linkopt=-Wl,-rpath-link,${toolchain_sysroot}/usr/lib"
     "--linkopt=-Wl,-rpath-link,${toolchain_sysroot}/lib"
     "--linkopt=-lfts"
-    "--host_linkopt=-lfts"
 )
 
 if [[ -n "${MOZC_BAZEL_EXTRA_ARGS:-}" ]]; then
