@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  buildroot:
     name: Build rootfs (${{ matrix.arch }})
     runs-on: ubuntu-24.04
     timeout-minutes: 360
@@ -55,6 +55,7 @@ jobs:
             wget
             debianutils
             xz-utils
+            zstd
           )
           missing_packages=()
           for package in "${required_packages[@]}"; do
@@ -77,6 +78,97 @@ jobs:
           restore-keys: |
             buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
 
+      - name: Build rootfs and legal information
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
+          BUILDROOT_DL_DIR: ${{ github.workspace }}/producer/cache/buildroot-dl
+        run: bash producer/tools/build_buildroot.sh
+
+      - name: Package Buildroot host SDK
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+        run: |
+          host_zstd="${BUILDROOT_DIR}/output/host/bin/zstd"
+          sdk_archive="producer/buildroot-sdk-${ARCH}.tar.zst"
+          test -x "${host_zstd}"
+          tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner \
+            --pax-option=delete=atime,delete=ctime \
+            -C "${BUILDROOT_DIR}/output" -cf - host | \
+            "${host_zstd}" -q --no-progress -19 -T1 -f -o "${sdk_archive}"
+
+      - name: Upload Buildroot host SDK
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildroot-sdk-${{ matrix.arch }}
+          if-no-files-found: error
+          path: producer/buildroot-sdk-${{ matrix.arch }}.tar.zst
+
+      - name: Materialize versioned rootfs artifacts
+        working-directory: producer
+        run: |
+          cp "artifacts/rootfs-${{ matrix.arch }}.tar.zst" \
+            "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          cp "artifacts/legal-info-${{ matrix.arch }}.tar.zst" \
+            "legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+
+      - name: Compute rootfs manifest hash
+        id: artifact
+        working-directory: producer
+        run: |
+          artifact_hash="$(../scripts/compute-artifact-hash.sh \
+            "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
+          printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate rootfs manifest fragment
+        working-directory: producer
+        run: |
+          cat > "manifest-${{ matrix.arch }}.toml" <<EOF
+          [[layers]]
+          kind = "archive"
+          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          sha256 = "${{ steps.artifact.outputs.sha256 }}"
+          format = "tar-zst"
+          strip_components = 1
+          to = "/system/linux-${{ matrix.arch }}"
+          EOF
+
+      - name: Upload rootfs release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-rootfs-${{ matrix.arch }}
+          if-no-files-found: error
+          path: |
+            producer/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
+            producer/legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
+            producer/manifest-${{ matrix.arch }}.toml
+
+  mozc:
+    name: Build Mozc (${{ matrix.arch }})
+    needs: buildroot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - riscv64
+          - aarch64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Mozc prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes zstd
+
       - name: Verify Bazelisk
         run: command -v bazelisk
 
@@ -90,14 +182,21 @@ jobs:
           restore-keys: |
             mozc-bazel-${{ runner.os }}-${{ matrix.arch }}-
 
-      - name: Build rootfs and legal information
+      - name: Download Buildroot host SDK
+        uses: actions/download-artifact@v4
+        with:
+          name: buildroot-sdk-${{ matrix.arch }}
+          path: producer/cache/buildroot-${{ matrix.arch }}
+
+      - name: Extract Buildroot host SDK
         env:
           ARCH: ${{ matrix.arch }}
-          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
-          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
-          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
-          BUILDROOT_DL_DIR: ${{ github.workspace }}/producer/cache/buildroot-dl
-        run: bash producer/tools/build_buildroot.sh
+        run: |
+          buildroot_dir="producer/cache/buildroot-${ARCH}"
+          mkdir -p "${buildroot_dir}/output"
+          zstd --decompress --stdout "${buildroot_dir}/buildroot-sdk-${ARCH}.tar.zst" | \
+            tar -xf - -C "${buildroot_dir}/output"
+          test -x "${buildroot_dir}/output/host/bin/zstd"
 
       - name: Build Mozc server
         env:
@@ -118,69 +217,47 @@ jobs:
           ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
         run: bash producer/tools/package_mozc.sh
 
-      - name: Materialize versioned release artifacts
+      - name: Materialize versioned Mozc artifact
         working-directory: producer
         run: |
-          cp "artifacts/rootfs-${{ matrix.arch }}.tar.zst" \
-            "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
-          cp "artifacts/legal-info-${{ matrix.arch }}.tar.zst" \
-            "legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
           cp "artifacts/mozc-${{ matrix.arch }}.tar.zst" \
             "mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
 
-      - name: Compute rootfs manifest hash
-        id: artifact
-        working-directory: producer
-        run: |
-          artifact_hash="$(../scripts/compute-artifact-hash.sh \
-            "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
-          printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
-
       - name: Compute Mozc manifest hash
-        id: mozc_artifact
+        id: artifact
         working-directory: producer
         run: |
           artifact_hash="$(../scripts/compute-artifact-hash.sh \
             "mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
           printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
 
-      - name: Generate cargo-scarlet manifest fragment
+      - name: Generate Mozc manifest fragment
         working-directory: producer
         run: |
-          cat > "manifest-${{ matrix.arch }}.toml" <<EOF
+          cat > "manifest-mozc-${{ matrix.arch }}.toml" <<EOF
           [[layers]]
           kind = "archive"
-          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
           sha256 = "${{ steps.artifact.outputs.sha256 }}"
           format = "tar-zst"
           strip_components = 1
           to = "/system/linux-${{ matrix.arch }}"
           EOF
-          cat > "manifest-mozc-${{ matrix.arch }}.toml" <<EOF
-          [[layers]]
-          kind = "archive"
-          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
-          sha256 = "${{ steps.mozc_artifact.outputs.sha256 }}"
-          format = "tar-zst"
-          strip_components = 1
-          to = "/system/linux-${{ matrix.arch }}"
-          EOF
 
-      - name: Upload release artifacts
+      - name: Upload Mozc release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: rootfs-${{ matrix.arch }}
+          name: release-mozc-${{ matrix.arch }}
           if-no-files-found: error
           path: |
-            producer/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
-            producer/legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
             producer/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
-            producer/manifest-${{ matrix.arch }}.toml
             producer/manifest-mozc-${{ matrix.arch }}.toml
 
   release:
     name: Create draft release
-    needs: build
+    needs:
+      - buildroot
+      - mozc
     if: success() && inputs.publish
     runs-on: ubuntu-24.04
     permissions:
@@ -190,6 +267,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
+          pattern: release-*
           path: release-assets
           merge-multiple: true
 

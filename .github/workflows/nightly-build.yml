@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  buildroot:
     name: Nightly rootfs (${{ matrix.arch }})
     runs-on: ubuntu-24.04
     timeout-minutes: 360
@@ -34,7 +34,7 @@ jobs:
         run: |
           required_packages=(
             bc binutils build-essential bzip2 cpio file gawk git gzip
-            patch perl python3 rsync tar unzip wget debianutils xz-utils
+            patch perl python3 rsync tar unzip wget debianutils xz-utils zstd
           )
           missing_packages=()
           for package in "${required_packages[@]}"; do
@@ -55,6 +55,89 @@ jobs:
           restore-keys: |
             nightly-buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
 
+      - name: Build rootfs and legal information
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
+          BUILDROOT_DL_DIR: ${{ github.workspace }}/producer/cache/buildroot-dl
+        run: bash producer/tools/build_buildroot.sh
+
+      - name: Package Buildroot host SDK
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+        run: |
+          host_zstd="${BUILDROOT_DIR}/output/host/bin/zstd"
+          sdk_archive="producer/buildroot-sdk-${ARCH}.tar.zst"
+          test -x "${host_zstd}"
+          tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner \
+            --pax-option=delete=atime,delete=ctime \
+            -C "${BUILDROOT_DIR}/output" -cf - host | \
+            "${host_zstd}" -q --no-progress -19 -T1 -f -o "${sdk_archive}"
+
+      - name: Upload Buildroot host SDK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-buildroot-sdk-${{ matrix.arch }}-${{ github.run_number }}
+          retention-days: 14
+          if-no-files-found: error
+          path: producer/buildroot-sdk-${{ matrix.arch }}.tar.zst
+
+      - name: Materialize nightly rootfs artifacts
+        env:
+          ARCH: ${{ matrix.arch }}
+        working-directory: producer
+        run: |
+          nightly_id="nightly-$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+          cp "artifacts/rootfs-${ARCH}.tar.zst" "rootfs-${ARCH}-${nightly_id}.tar.zst"
+          cp "artifacts/legal-info-${ARCH}.tar.zst" "legal-info-${ARCH}-${nightly_id}.tar.zst"
+          rootfs_hash="$(sha256sum "rootfs-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
+          legal_hash="$(sha256sum "legal-info-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
+          {
+            printf 'nightly_id=%s\n' "${nightly_id}"
+            printf 'arch=%s\n' "${ARCH}"
+            printf 'commit=%s\n' "${GITHUB_SHA}"
+            printf 'run=https://github.com/%s/actions/runs/%s\n' "${GITHUB_REPOSITORY}" "${GITHUB_RUN_ID}"
+            printf 'rootfs_sha256=%s\n' "${rootfs_hash}"
+            printf 'legal_info_sha256=%s\n' "${legal_hash}"
+          } > "nightly-rootfs-manifest-${ARCH}-${nightly_id}.txt"
+
+      - name: Upload nightly rootfs artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-rootfs-${{ matrix.arch }}-${{ github.run_number }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            producer/rootfs-${{ matrix.arch }}-nightly-*.tar.zst
+            producer/legal-info-${{ matrix.arch }}-nightly-*.tar.zst
+            producer/nightly-rootfs-manifest-${{ matrix.arch }}-nightly-*.txt
+
+  mozc:
+    name: Nightly Mozc (${{ matrix.arch }})
+    needs: buildroot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - riscv64
+          - aarch64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Mozc prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes zstd
+
       - name: Verify Bazelisk
         run: command -v bazelisk
 
@@ -68,14 +151,21 @@ jobs:
           restore-keys: |
             nightly-mozc-bazel-${{ runner.os }}-${{ matrix.arch }}-
 
-      - name: Build rootfs and legal information
+      - name: Download Buildroot host SDK
+        uses: actions/download-artifact@v4
+        with:
+          name: nightly-buildroot-sdk-${{ matrix.arch }}-${{ github.run_number }}
+          path: producer/cache/buildroot-${{ matrix.arch }}
+
+      - name: Extract Buildroot host SDK
         env:
           ARCH: ${{ matrix.arch }}
-          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
-          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
-          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
-          BUILDROOT_DL_DIR: ${{ github.workspace }}/producer/cache/buildroot-dl
-        run: bash producer/tools/build_buildroot.sh
+        run: |
+          buildroot_dir="producer/cache/buildroot-${ARCH}"
+          mkdir -p "${buildroot_dir}/output"
+          zstd --decompress --stdout "${buildroot_dir}/buildroot-sdk-${ARCH}.tar.zst" | \
+            tar -xf - -C "${buildroot_dir}/output"
+          test -x "${buildroot_dir}/output/host/bin/zstd"
 
       - name: Build Mozc server
         env:
@@ -96,36 +186,28 @@ jobs:
           ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
         run: bash producer/tools/package_mozc.sh
 
-      - name: Materialize nightly artifact names
+      - name: Materialize nightly Mozc artifact
         env:
           ARCH: ${{ matrix.arch }}
         working-directory: producer
         run: |
           nightly_id="nightly-$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
-          cp "artifacts/rootfs-${ARCH}.tar.zst" "rootfs-${ARCH}-${nightly_id}.tar.zst"
-          cp "artifacts/legal-info-${ARCH}.tar.zst" "legal-info-${ARCH}-${nightly_id}.tar.zst"
           cp "artifacts/mozc-${ARCH}.tar.zst" "mozc-${ARCH}-${nightly_id}.tar.zst"
-          rootfs_hash="$(sha256sum "rootfs-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
-          legal_hash="$(sha256sum "legal-info-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
           mozc_hash="$(sha256sum "mozc-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
           {
             printf 'nightly_id=%s\n' "${nightly_id}"
             printf 'arch=%s\n' "${ARCH}"
             printf 'commit=%s\n' "${GITHUB_SHA}"
             printf 'run=https://github.com/%s/actions/runs/%s\n' "${GITHUB_REPOSITORY}" "${GITHUB_RUN_ID}"
-            printf 'rootfs_sha256=%s\n' "${rootfs_hash}"
-            printf 'legal_info_sha256=%s\n' "${legal_hash}"
             printf 'mozc_sha256=%s\n' "${mozc_hash}"
-          } > "nightly-build-info-${ARCH}-${nightly_id}.txt"
+          } > "nightly-mozc-manifest-${ARCH}-${nightly_id}.txt"
 
-      - name: Upload nightly artifacts
+      - name: Upload nightly Mozc artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-${{ matrix.arch }}-${{ github.run_number }}
+          name: nightly-mozc-${{ matrix.arch }}-${{ github.run_number }}
           retention-days: 14
           if-no-files-found: error
           path: |
-            producer/rootfs-${{ matrix.arch }}-nightly-*.tar.zst
-            producer/legal-info-${{ matrix.arch }}-nightly-*.tar.zst
             producer/mozc-${{ matrix.arch }}-nightly-*.tar.zst
-            producer/nightly-build-info-${{ matrix.arch }}-nightly-*.txt
+            producer/nightly-mozc-manifest-${{ matrix.arch }}-nightly-*.txt
