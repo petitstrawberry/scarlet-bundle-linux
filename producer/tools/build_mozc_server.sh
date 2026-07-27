@@ -246,18 +246,39 @@ fi
 
 prepare_target_platform() {
     local build_file="${src_dir}/BUILD.bazel"
+    local platform_name="linux_${BAZEL_CPU}"
+    local toolchain_name="local_config_cc_${platform_name}"
 
     if [[ ! -f "${build_file}" ]]; then
         echo "Mozc BUILD.bazel is missing at ${build_file}" >&2
         exit 1
     fi
 
-    if ! grep -q "name = \"linux_${BAZEL_CPU}\"" "${build_file}"; then
+    if ! grep -q "name = \"${platform_name}\"" "${build_file}"; then
         cat >> "${build_file}" <<EOF
 
 platform(
-    name = "linux_${BAZEL_CPU}",
+    name = "${platform_name}",
     constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:${BAZEL_CPU}",
+    ],
+)
+EOF
+    fi
+
+    if ! grep -q "name = \"${toolchain_name}\"" "${build_file}"; then
+        cat >> "${build_file}" <<EOF
+
+toolchain(
+    name = "${toolchain_name}",
+    toolchain = "@local_config_cc//:cc-compiler-k8",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:${BAZEL_CPU}",
     ],
@@ -568,9 +589,8 @@ build_args=(
     "--config=release_build"
     "--cpu=${BAZEL_CPU}"
     "--platforms=//:linux_${BAZEL_CPU}"
+    "--extra_toolchains=//:local_config_cc_linux_${BAZEL_CPU}"
     "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
-    "--crosstool_top=@local_config_cc//:toolchain"
-    "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=CC=${toolchain_gcc}"
     "--repo_env=CXX=${toolchain_gxx}"
     "--action_env=CC=${toolchain_gcc}"
