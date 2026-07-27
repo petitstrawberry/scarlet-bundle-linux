@@ -3,94 +3,82 @@
 Producer repository for the Linux userspace artifacts consumed by the
 [Scarlet](https://github.com/petitstrawberry/Scarlet) operating system.
 
-This repository hosts the Buildroot configuration, build scripts, and
-runtime bundle manifests used to generate per-arch Linux root filesystems
-and auxiliary user-space artifacts (Mozc, kvmtool, demo applications, SHV
+This repository hosts the Buildroot configuration, build scripts, and runtime
+bundle manifests used to generate per-architecture Linux root filesystems and
+auxiliary user-space artifacts (Mozc, kvmtool, demo applications, and the SHV
 guest kernel/initramfs) for Scarlet.
 
-## Building artifacts via Nix
+## Building Buildroot root filesystems
 
-On a Linux host, Buildroot root filesystems can be built from the producer
-flake after the matching source lock has been reviewed and committed:
-
-```bash
-cd producer
-nix build .#rootfs-riscv64
-```
-
-The resulting archive is available as `result/rootfs-{arch}.tar.zst`. Buildroot
-produces Linux binaries, so macOS hosts must use a Linux remote builder or CI.
-Buildroot package downloads are pinned in per-architecture JSON source locks,
-which normal rootfs builds only consume.
-
-The Linux builder must allow the nested user namespaces used by Nixpkgs'
-`buildFHSEnv`/bubblewrap wrapper. GitHub-hosted Ubuntu runners enable this in
-the workflows before invoking Nix. Restricted builders can run the same flake
-output inside a privileged Linux Docker container; this changes the transport,
-not the package definition.
-
-### Refreshing Buildroot source locks
-
-Refresh source locks only for intentional Buildroot configuration or package
-changes, including initial bootstrap. Run the manual **Update Buildroot source
-locks** workflow; it generates the `buildroot-source-lock-riscv64` and
-`buildroot-source-lock-aarch64` artifacts without changing the repository.
-Download the artifacts, replace the corresponding files in
-`producer/buildroot/locks/`, review them, and commit them before running a
-normal rootfs build or release.
-
-For a local Linux refresh, generate each lock and copy it into the checked-in
-location before review and commit:
+Rootfs builds run directly on a normal Linux host. The release workflow uses
+Ubuntu 24.04. The script downloads vanilla Buildroot 2025.02.6, verifies the official
+tarball SHA-256 before extraction, applies the retained Buildroot-tree patches
+with zero fuzz, and configures the Scarlet BR2_EXTERNAL tree. Buildroot's own
+download hash checks are mandatory, and both defconfigs enable Buildroot's
+reproducible-build setting.
 
 ```bash
-cd producer
-nix build .#lock-riscv64
-cp --remove-destination result buildroot/locks/riscv64.json
+# Run on Ubuntu 24.04 or another supported Linux host.
+# Build and stage RISC-V rootfs, release rootfs, and legal-info archives.
+ARCH=riscv64 bash producer/tools/build_buildroot.sh
+
+# Build AArch64.
+ARCH=aarch64 bash producer/tools/build_buildroot.sh
+
+# Validate the pinned source, patches, and generated configuration only.
+ARCH=aarch64 BUILDROOT_BUILD_MODE=configure \
+  bash producer/tools/build_buildroot.sh
 ```
 
-Repeat with `aarch64` as needed. The current `{}` placeholders cannot be used
-for a normal rootfs or release build; the release workflow rejects empty or
-invalid source locks before starting the expensive build.
+Defaults are deliberately per architecture:
+
+```
+producer/cache/buildroot-riscv64/output/
+producer/cache/buildroot-aarch64/output/
+```
+
+`BUILDROOT_DIR` can be set to another per-architecture work directory. Its
+`output/host` and `output/staging` paths remain the interface consumed by the
+guest kernel, Mozc, kvmtool, and user-program scripts. `BUILDROOT_DL_DIR`
+defaults to the shared `producer/cache/buildroot-dl` download cache; Buildroot
+handles its own download locking. `PREBUILT_DIR` receives
+`<arch>/rootfs.tar`, while `ARTIFACT_DIR` receives
+`rootfs-<arch>.tar.zst` and `legal-info-<arch>.tar.zst`.
+
+Full builds use Buildroot's configured host-zstd to create `.zst` artifacts.
+The legal-info archive is created from Buildroot's `make legal-info` output
+with normalized GNU tar metadata.
 
 ## License
 
-GPL-2.0-only. See [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md)
-for the per-package license tracking policy.
+GPL-2.0-only. See [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md) for
+the per-package license tracking policy.
 
 ## Repository layout
 
 ```
 scarlet-bundle-linux/
 ├── producer/                       # build-time only (not consumed by Scarlet users)
-│   ├── flake.nix                   # Nix toolchain pin (Buildroot 2025.02.6)
-│   ├── tools/                      # build scripts
-│   │   ├── prepare.sh              # orchestrator
-│   │   ├── build_buildroot.sh
-│   │   ├── build_user_programs.sh  # zathura / green / fbdoom
+│   ├── buildroot/
+│   │   ├── external/                # BR2_EXTERNAL metadata and defconfigs
+│   │   └── patches/                 # Buildroot-source recipe patches
+│   ├── tools/
+│   │   ├── build_buildroot.sh       # direct Linux Buildroot driver
+│   │   ├── prepare.sh               # orchestrator
+│   │   ├── build_user_programs.sh   # zathura / green / fbdoom
 │   │   ├── build_mozc_server.sh
-│   │   ├── build_kvmtool.sh        # riscv64 only
+│   │   ├── build_kvmtool.sh         # riscv64 only
 │   │   ├── build_guest_image.sh
 │   │   ├── build_guest_kernel.sh
 │   │   └── deploy_rootfs.sh
-│   ├── tests/
-│   │   └── deploy_rootfs_test.sh
-│   ├── buildroot/                  # Buildroot configs, source locks, and patches
-│   ├── legal-info/                 # license collection automation (Step 7)
-│   └── output/                     # local deploy target (gitignored payloads)
-│       └── rootfs/{system,data}/linux-{arch}/
-├── bundles/                        # runtime contract consumed by Scarlet
-│   ├── rootfs/                     # Buildroot rootfs + config
-│   │   └── bundle.toml
-│   ├── apps-demo/                  # zathura / green / fbdoom overlay
-│   │   └── bundle.toml
-│   ├── mozc/                       # Mozc server assets
-│   │   └── bundle.toml
-│   ├── kvmtool/                    # kvmtool (riscv64 only)
-│   │   └── bundle.toml
-│   └── shv-guest/                  # SHV guest kernel + initramfs
-│       └── bundle.toml
-├── releases/                       # release manifest templates (Step 5)
-└── .github/workflows/              # CI / release automation (Step 5+)
+│   ├── tests/                       # focused shell tests
+│   ├── cache/buildroot-<arch>/      # source + output/ work directories
+│   ├── cache/buildroot-dl/          # shared Buildroot download cache
+│   ├── prebuilt/<arch>/rootfs.tar   # downstream staging contract
+│   └── artifacts/                   # rootfs + legal-info release archives
+├── bundles/                         # runtime contract consumed by Scarlet
+├── releases/                        # release manifest templates
+└── .github/workflows/               # CI / release automation
 ```
 
 ## Bundle lifecycle split
@@ -110,10 +98,10 @@ tag. Daily snapshots roll under a separate `nightly` tag. See
 ## Relationship to Scarlet
 
 Scarlet consumes bundles from this repository via `cargo-scarlet`. Every
-bundle uses `kind = "archive"` layers pinned by URL and SHA-256 against
-assets published on GitHub Releases, so clean Scarlet clones no longer
-need to run Buildroot. The per-arch SHA-256 map lets a single `bundle.toml`
-cover both `aarch64` and `riscv64`:
+bundle uses `kind = "archive"` layers pinned by URL and SHA-256 against assets
+published on GitHub Releases, so clean Scarlet clones do not need to run
+Buildroot. The per-architecture SHA-256 map lets a single `bundle.toml` cover
+both `aarch64` and `riscv64`:
 
 ```toml
 [[layers]]
@@ -126,35 +114,22 @@ to = "/system/linux-{arch}"
 ```
 
 The `sha256` placeholders in the current manifests are TODO markers. They
-will be populated with real hashes when `v0.1.0` is cut (Step 5).
-
-## Status
-
-History extracted from Scarlet's `bundles/linux` (and its former
-`tools/linux` location) via `git filter-repo`. Producer environment is
-pinned via `producer/flake.nix` (Buildroot 2025.02.6 + nixpkgs). Archive-
-kind bundle manifests are in place pending the first release. The manual
-release pipeline is in place; nightly automation and legal-info collection
-remain as follow-up steps.
+will be populated with real hashes when `v0.1.0` is cut.
 
 ## Cutting a release
 
-1. Open the **Build release** workflow in GitHub Actions and run it manually
-   with a version such as `v0.1.0`. The workflow builds both `riscv64` and
-   `aarch64` on Linux runners. Leave `publish` disabled for build-only
-   validation; enable it only when the successful artifacts should be attached
-   to a draft GitHub Release.
-2. The workflow validates and consumes the checked-in source lock for each
-   architecture; it does not refresh or modify locks. Use **Update Buildroot
-   source locks** and commit its reviewed artifacts before this step when a
-   lock refresh is needed.
-3. Each build uploads a versioned rootfs archive and a
-   `manifest-<arch>.toml` fragment containing the GitHub Release URL and its
-   `sha256:<hex>` value. The workflow creates a draft release with those files.
-4. Use the manifest fragments to replace the matching TODO values in
-   `bundles/rootfs/bundle.toml` as a separate release update.
+1. Open the **Build release** workflow and run it with a version such as
+   `v0.1.0`. It builds both architectures directly on Ubuntu 24.04, restores a
+   per-architecture Buildroot download cache, and verifies the official
+   Buildroot source tarball before each extraction.
+2. Leave `publish` disabled for build-only validation. The workflow still
+   uploads each versioned rootfs archive, legal-info archive, and
+   `manifest-<arch>.toml` fragment. Enable `publish` only to attach all of
+   those files to a draft GitHub Release.
+3. Each manifest contains the rootfs release URL and its `sha256:<hex>` value.
+   Use it to replace the matching TODO in `bundles/rootfs/bundle.toml` as a
+   separate release update.
 
-For a local Linux rerun with committed locks, use `nix build .#rootfs-<arch>`.
-Use
-`scripts/compute-artifact-hash.sh <file>` to format an artifact hash for a
+For a local build, use the Linux commands above. Use
+`scripts/compute-artifact-hash.sh <file>` to format any artifact hash for a
 cargo-scarlet manifest.

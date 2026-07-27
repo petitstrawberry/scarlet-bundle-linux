@@ -12,7 +12,8 @@ licensed under the GNU General Public License v2. See [LICENSE](LICENSE).
 
 Each produced binary retains the license of its upstream source. Release
 archives are accompanied by a `legal-info-<arch>.tar.zst` bundle produced
-via `make legal-info` that contains:
+by the direct Linux Buildroot script. It runs `make legal-info` and archives
+its output with normalized GNU tar metadata. It contains:
 
 - Source tarballs
 - Patch files
@@ -26,6 +27,7 @@ For each `vX.Y.Z` release and each `nightly-YYYYMMDD` snapshot, the
 following per-arch artifacts are published on GitHub Releases:
 
 - `rootfs-<arch>-vX.Y.Z.tar.zst` - Buildroot rootfs + config overlay
+- `legal-info-<arch>-vX.Y.Z.tar.zst` - Buildroot source, patches, licenses, notices, and configuration
 - `apps-demo-<arch>-vX.Y.Z.tar.zst` - optional demo programs
 - `mozc-<arch>-vX.Y.Z.tar.zst` - Mozc server assets
 - `kvmtool-<arch>-vX.Y.Z.tar.zst` - kvmtool (riscv64 only)
