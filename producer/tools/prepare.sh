@@ -9,7 +9,7 @@ set -euo pipefail
 # Options:
 #   --arch ARCH          aarch64 or riscv64 (default: aarch64)
 #   --steps STEPS        Comma-separated steps to run (default: all)
-#   --buildroot-dir DIR  Buildroot tree location
+#   --buildroot-dir DIR  Per-architecture Buildroot work directory
 #   --prebuilt-dir DIR   Artifact staging directory (default: ../prebuilt)
 #   --workdir DIR        Checkout/build working directory (default: ./cache/work)
 #   --make-jobs N        Parallelism for make (default: $(nproc))
@@ -38,8 +38,8 @@ set -euo pipefail
 # fully populated rootfs/system/linux-<arch>/ tree that the bundle's copy layer
 # picks up during cargo-scarlet image builds.
 #
-# macOS note: Buildroot and kernel builds require a Linux host. Run inside
-# scarlet-dev Docker, a Linux VM, or a Linux Nix shell.
+# Buildroot runs directly on a normal Linux host; CI uses Ubuntu 24.04.
+# Guest-kernel and optional producer steps use the same host toolchain.
 
 ARCH="${ARCH:-aarch64}"
 STEPS="${STEPS:-all}"

@@ -2,6 +2,9 @@
 /cache/
 /prebuilt/
 /output/
+/producer/artifacts/
+/producer/cache/
+/producer/prebuilt/
 
 # Editor / OS
 .DS_Store
