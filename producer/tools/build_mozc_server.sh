@@ -244,6 +244,28 @@ if [[ ! -d "${src_dir}" ]]; then
     exit 1
 fi
 
+prepare_target_platform() {
+    local build_file="${src_dir}/BUILD.bazel"
+
+    if [[ ! -f "${build_file}" ]]; then
+        echo "Mozc BUILD.bazel is missing at ${build_file}" >&2
+        exit 1
+    fi
+
+    if ! grep -q "name = \"linux_${BAZEL_CPU}\"" "${build_file}"; then
+        cat >> "${build_file}" <<EOF
+
+platform(
+    name = "linux_${BAZEL_CPU}",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:${BAZEL_CPU}",
+    ],
+)
+EOF
+    fi
+}
+
 prepare_dictionary() {
     local dictionary_file="${src_dir}/data/dictionary_oss/dictionary00.txt"
     local merge_dir="${MOZC_UT_DIR}/src/merge"
@@ -329,6 +351,7 @@ PY
 }
 
 prepare_dictionary
+prepare_target_platform
 
 if [[ "${MOZC_ALLOW_ROOT_SERVER}" == "1" ]]; then
     run_level_cc="${src_dir}/base/run_level.cc"
@@ -544,6 +567,8 @@ build_args=(
     "--config=oss_linux"
     "--config=release_build"
     "--cpu=${BAZEL_CPU}"
+    "--platforms=//:linux_${BAZEL_CPU}"
+    "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
     "--crosstool_top=@local_config_cc//:toolchain"
     "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=CC=${toolchain_gcc}"
