@@ -92,7 +92,8 @@ scarlet-bundle-linux/
 | `shv-guest` | guest kernel + initramfs for nested virt | guest kernel bump or rootfs refresh |
 
 All artifacts for a given `vX.Y.Z` are attached to a single GitHub Release
-tag. Daily snapshots roll under a separate `nightly` tag. See
+tag. Daily validation builds are retained temporarily as GitHub Actions
+artifacts and do not create a release tag. See
 [ATTRIBUTION.md](ATTRIBUTION.md) for the per-artifact license review policy.
 
 ## Relationship to Scarlet
@@ -123,12 +124,20 @@ will be populated with real hashes when `v0.1.0` is cut.
    per-architecture Buildroot download cache, and verifies the official
    Buildroot source tarball before each extraction.
 2. Leave `publish` disabled for build-only validation. The workflow still
-   uploads each versioned rootfs archive, legal-info archive, and
-   `manifest-<arch>.toml` fragment. Enable `publish` only to attach all of
+   builds and uploads each versioned rootfs, legal-info, and pinned Mozc archive plus
+   the `manifest-<arch>.toml` fragment. Enable `publish` only to attach all of
    those files to a draft GitHub Release.
 3. Each manifest contains the rootfs release URL and its `sha256:<hex>` value.
    Use it to replace the matching TODO in `bundles/rootfs/bundle.toml` as a
    separate release update.
+
+## Nightly validation
+
+The **Nightly Buildroot validation** workflow runs daily at 03:15 UTC and can
+also be started manually. It builds both architectures directly on Ubuntu
+24.04, but does not create a GitHub Release or modify the stable bundle
+manifests. The rootfs, legal-info, and build metadata are uploaded as Actions
+artifacts for 14 days. Stable releases remain an explicit manual operation.
 
 For a local build, use the Linux commands above. Use
 `scripts/compute-artifact-hash.sh <file>` to format any artifact hash for a
