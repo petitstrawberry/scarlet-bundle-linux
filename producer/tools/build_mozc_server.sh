@@ -53,7 +53,7 @@ require_supported_host() {
 
     cat >&2 <<EOF
 Mozc is built with Linux-host tooling and the Buildroot cross toolchain.
-Run this script on Linux, such as scarlet-dev, a Linux VM, or a Linux Nix shell.
+Run this script on a normal Linux host, such as Ubuntu 24.04.
 
 Example for AArch64 with repository-local paths:
   ARCH=aarch64 \\

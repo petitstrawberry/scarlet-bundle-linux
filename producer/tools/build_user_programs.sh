@@ -4,7 +4,7 @@ set -euo pipefail
 # Builds optional user-space programs (zathura, green, fbdoom, kvmtool) using the preconfigured toolchain.
 # Environment variables:
 #  ARCH - target architecture (riscv64 or aarch64), defaults to riscv64
-#  BUILDROOT_DIR - Buildroot tree; defaults to the Docker path for ARCH
+#  BUILDROOT_DIR - per-architecture Buildroot work directory
 #  PREBUILT_DIR - artifact staging directory, defaults to bundles/linux/prebuilt
 #  WORKDIR - checkout/build working directory, defaults to /opt
 
@@ -48,7 +48,7 @@ require_supported_host() {
 
     cat >&2 <<EOF
 Linux ABI user programs are built with the Buildroot host toolchain.
-Run this script on Linux, such as scarlet-dev, a Linux VM, or a Linux Nix shell.
+Run this script on a normal Linux host, such as Ubuntu 24.04.
 
 Example for aarch64 with repository-local paths:
   ARCH=aarch64 \\
