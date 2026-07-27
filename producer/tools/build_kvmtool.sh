@@ -38,7 +38,7 @@ require_supported_host() {
 
     cat >&2 <<EOF
 Linux ABI support tools are built with Linux-host tooling.
-Run this script on Linux, such as scarlet-dev, a Linux VM, or a Linux Nix shell.
+Run this script on a normal Linux host, such as Ubuntu 24.04.
 
 Example:
   ARCH=${ARCH} \\
