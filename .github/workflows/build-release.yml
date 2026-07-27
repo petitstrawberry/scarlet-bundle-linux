@@ -77,6 +77,19 @@ jobs:
           restore-keys: |
             buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
 
+      - name: Verify Bazelisk
+        run: command -v bazelisk
+
+      - name: Restore Mozc build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/bazelisk
+            producer/cache/work/bazel-${{ matrix.arch }}
+          key: mozc-bazel-${{ runner.os }}-${{ matrix.arch }}-3f235b4-0bde52d-${{ hashFiles('producer/tools/build_mozc_server.sh', format('producer/buildroot/external/configs/scarlet_{0}_defconfig', matrix.arch)) }}
+          restore-keys: |
+            mozc-bazel-${{ runner.os }}-${{ matrix.arch }}-
+
       - name: Build rootfs and legal information
         env:
           ARCH: ${{ matrix.arch }}
@@ -86,6 +99,25 @@ jobs:
           BUILDROOT_DL_DIR: ${{ github.workspace }}/producer/cache/buildroot-dl
         run: bash producer/tools/build_buildroot.sh
 
+      - name: Build Mozc server
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          WORKDIR: ${{ github.workspace }}/producer/cache/work
+          MOZC_HOST_PYTHON: /usr/bin/python3
+          MOZC_REV: 3f235b4eb6fcff7d14ef5f0fb8ee56de7ee4c732
+          MUSL_FTS_REV: 0bde52df588e8969879a2cae51c3a4774ec62472
+        run: bash producer/tools/build_mozc_server.sh
+
+      - name: Package Mozc server
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
+        run: bash producer/tools/package_mozc.sh
+
       - name: Materialize versioned release artifacts
         working-directory: producer
         run: |
@@ -93,6 +125,8 @@ jobs:
             "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
           cp "artifacts/legal-info-${{ matrix.arch }}.tar.zst" \
             "legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          cp "artifacts/mozc-${{ matrix.arch }}.tar.zst" \
+            "mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
 
       - name: Compute rootfs manifest hash
         id: artifact
@@ -100,6 +134,14 @@ jobs:
         run: |
           artifact_hash="$(../scripts/compute-artifact-hash.sh \
             "rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
+          printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
+
+      - name: Compute Mozc manifest hash
+        id: mozc_artifact
+        working-directory: producer
+        run: |
+          artifact_hash="$(../scripts/compute-artifact-hash.sh \
+            "mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
           printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
 
       - name: Generate cargo-scarlet manifest fragment
@@ -114,6 +156,15 @@ jobs:
           strip_components = 1
           to = "/system/linux-${{ matrix.arch }}"
           EOF
+          cat > "manifest-mozc-${{ matrix.arch }}.toml" <<EOF
+          [[layers]]
+          kind = "archive"
+          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          sha256 = "${{ steps.mozc_artifact.outputs.sha256 }}"
+          format = "tar-zst"
+          strip_components = 1
+          to = "/system/linux-${{ matrix.arch }}"
+          EOF
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
@@ -123,7 +174,9 @@ jobs:
           path: |
             producer/rootfs-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
             producer/legal-info-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
+            producer/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
             producer/manifest-${{ matrix.arch }}.toml
+            producer/manifest-mozc-${{ matrix.arch }}.toml
 
   release:
     name: Create draft release
