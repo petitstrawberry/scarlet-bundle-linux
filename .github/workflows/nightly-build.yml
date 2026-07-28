@@ -48,19 +48,20 @@ jobs:
           fi
 
       - name: Restore Buildroot download cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: producer/cache/buildroot-dl
-          key: nightly-buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles(format('producer/buildroot/external/configs/scarlet_{0}_defconfig', matrix.arch)) }}
+          key: nightly-buildroot-dl-v2-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles(format('producer/buildroot/external/configs/scarlet_{0}_defconfig', matrix.arch)) }}
           restore-keys: |
+            nightly-buildroot-dl-v2-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
             nightly-buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
             buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
 
       - name: Restore Buildroot output cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: producer/cache/buildroot-${{ matrix.arch }}/output
-          key: buildroot-output-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles('producer/buildroot/external/**', 'producer/buildroot/patches/**', 'producer/tools/build_buildroot.sh') }}
+          key: buildroot-output-v2-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles('producer/buildroot/external/**', 'producer/buildroot/patches/**', 'producer/tools/build_buildroot.sh') }}
 
       - name: Build rootfs and legal information
         env:
@@ -121,6 +122,18 @@ jobs:
             producer/rootfs-${{ matrix.arch }}-nightly-*.tar.zst
             producer/legal-info-${{ matrix.arch }}-nightly-*.tar.zst
             producer/nightly-rootfs-manifest-${{ matrix.arch }}-nightly-*.txt
+
+      - name: Save Buildroot output cache
+        uses: actions/cache/save@v4
+        with:
+          path: producer/cache/buildroot-${{ matrix.arch }}/output
+          key: buildroot-output-v2-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles('producer/buildroot/external/**', 'producer/buildroot/patches/**', 'producer/tools/build_buildroot.sh') }}
+
+      - name: Save Buildroot download cache
+        uses: actions/cache/save@v4
+        with:
+          path: producer/cache/buildroot-dl
+          key: nightly-buildroot-dl-v2-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles(format('producer/buildroot/external/configs/scarlet_{0}_defconfig', matrix.arch)) }}
 
   mozc:
     name: Nightly Mozc (${{ matrix.arch }})
