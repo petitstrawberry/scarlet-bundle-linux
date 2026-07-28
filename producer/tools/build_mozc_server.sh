@@ -339,6 +339,7 @@ buildroot_cc_toolchain_config = rule(
 EOF
 
     cat > "${toolchain_pkg_dir}/BUILD.bazel" <<EOF
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load(":cc_toolchain_config.bzl", "buildroot_cc_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
