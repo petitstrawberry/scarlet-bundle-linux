@@ -55,6 +55,12 @@ jobs:
           restore-keys: |
             nightly-buildroot-dl-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-
 
+      - name: Restore Buildroot output cache
+        uses: actions/cache@v4
+        with:
+          path: producer/cache/buildroot-${{ matrix.arch }}/output
+          key: buildroot-output-${{ runner.os }}-${{ matrix.arch }}-2025.02.6-${{ hashFiles('producer/buildroot/external/**', 'producer/buildroot/patches/**', 'producer/tools/build_buildroot.sh') }}
+
       - name: Build rootfs and legal information
         env:
           ARCH: ${{ matrix.arch }}
