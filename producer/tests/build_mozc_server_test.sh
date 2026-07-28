@@ -26,7 +26,6 @@ assert_contains '"@platforms//cpu:x86_64"'
 assert_contains '"@platforms//cpu:${BAZEL_CPU}"'
 assert_contains '"--platforms=//scarlet_buildroot_cc:linux_${BAZEL_CPU}"'
 assert_contains '"--extra_toolchains=//scarlet_buildroot_cc:buildroot_cc_linux_${BAZEL_CPU}"'
-assert_contains '"--host_platform=@local_config_platform//:host"'
 assert_contains '"--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"'
 assert_contains '"--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"'
 

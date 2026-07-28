@@ -687,7 +687,6 @@ build_args=(
     "--cpu=${BAZEL_CPU}"
     "--platforms=//scarlet_buildroot_cc:linux_${BAZEL_CPU}"
     "--extra_toolchains=//scarlet_buildroot_cc:buildroot_cc_linux_${BAZEL_CPU}"
-    "--host_platform=@local_config_platform//:host"
     "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
 )
