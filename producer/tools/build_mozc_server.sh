@@ -97,9 +97,18 @@ toolchain_gxx="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-g++"
 toolchain_ar="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-ar"
 toolchain_ranlib="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-ranlib"
 toolchain_strip="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-strip"
+toolchain_cpp="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-cpp"
+toolchain_ld="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-ld"
+toolchain_nm="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-nm"
+toolchain_objcopy="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-objcopy"
+toolchain_objdump="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-objdump"
+toolchain_gcov="${toolchain_bindir}/${TOOLCHAIN_PREFIX}-gcov"
 toolchain_sysroot="${BUILDROOT_DIR}/output/host/${TOOLCHAIN_PREFIX}/sysroot"
 
-for tool in "${toolchain_gcc}" "${toolchain_gxx}" "${toolchain_ar}" "${toolchain_ranlib}" "${toolchain_strip}"; do
+for tool in \
+    "${toolchain_gcc}" "${toolchain_gxx}" "${toolchain_ar}" "${toolchain_ranlib}" \
+    "${toolchain_strip}" "${toolchain_cpp}" "${toolchain_ld}" "${toolchain_nm}" \
+    "${toolchain_objcopy}" "${toolchain_objdump}" "${toolchain_gcov}"; do
     if [[ ! -x "${tool}" ]]; then
         echo "Buildroot toolchain component missing: ${tool}" >&2
         echo "Run ARCH=${ARCH} bash ${SCRIPT_DIR}/build_buildroot.sh first." >&2
@@ -244,35 +253,123 @@ if [[ ! -d "${src_dir}" ]]; then
     exit 1
 fi
 
-prepare_target_platform() {
-    local build_file="${src_dir}/BUILD.bazel"
-    local platform_name="linux_${BAZEL_CPU}"
-    local toolchain_name="local_config_cc_${platform_name}"
+prepare_target_toolchain() {
+    local toolchain_pkg_dir="${src_dir}/scarlet_buildroot_cc"
+    local gcc_include_dir
+    local gcc_include_fixed_dir
+    local -a cxx_include_dirs=()
 
-    if [[ ! -f "${build_file}" ]]; then
-        echo "Mozc BUILD.bazel is missing at ${build_file}" >&2
+    gcc_include_dir="$(${toolchain_gcc} -print-file-name=include)"
+    gcc_include_fixed_dir="$(${toolchain_gcc} -print-file-name=include-fixed)"
+    while IFS= read -r include_dir; do
+        [[ -n "${include_dir}" && -d "${include_dir}" ]] && cxx_include_dirs+=("${include_dir}")
+    done < <(
+        "${toolchain_gxx}" -E -x c++ - -v </dev/null 2>&1 |
+            awk '/#include <...> search starts here:/{capture=1; next} /End of search list./{capture=0} capture {sub(/^ /, ""); print}'
+    )
+    if ((${#cxx_include_dirs[@]} == 0)); then
+        echo "Unable to determine Buildroot C++ include directories." >&2
         exit 1
     fi
+    mkdir -p "${toolchain_pkg_dir}"
 
-    if ! grep -q "name = \"${platform_name}\"" "${build_file}"; then
-        cat >> "${build_file}" <<EOF
+    cat > "${toolchain_pkg_dir}/cc_toolchain_config.bzl" <<EOF
+load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
+load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl", "feature", "flag_group", "flag_set", "tool_path")
+
+def _buildroot_cc_toolchain_config_impl(ctx):
+    return cc_common.create_cc_toolchain_config_info(
+        ctx = ctx,
+        features = [
+            feature(
+                name = "buildroot_link_options",
+                enabled = True,
+                flag_sets = [
+                    flag_set(
+                        actions = [
+                            ACTION_NAMES.cpp_link_executable,
+                            ACTION_NAMES.cpp_link_dynamic_library,
+                            ACTION_NAMES.cpp_link_nodeps_dynamic_library,
+                        ],
+                        flag_groups = [
+                            flag_group(flags = [
+                                "-Wl,-rpath-link,${toolchain_sysroot}/usr/lib",
+                                "-Wl,-rpath-link,${toolchain_sysroot}/lib",
+                                "-lfts",
+                            ]),
+                        ],
+                    ),
+                ],
+            ),
+        ],
+        cxx_builtin_include_directories = [
+            "${toolchain_sysroot}/usr/include",
+            "${toolchain_sysroot}/include",
+            "${gcc_include_dir}",
+            "${gcc_include_fixed_dir}",
+$(printf '            "%s",\n' "${cxx_include_dirs[@]}")
+        ],
+        builtin_sysroot = "${toolchain_sysroot}",
+        toolchain_identifier = "buildroot-${BAZEL_CPU}",
+        host_system_name = "local",
+        target_system_name = "buildroot-linux-musl",
+        target_cpu = "${BAZEL_CPU}",
+        target_libc = "musl",
+        compiler = "gcc",
+        abi_version = "unknown",
+        abi_libc_version = "unknown",
+        tool_paths = [
+            tool_path(name = "ar", path = "${toolchain_ar}"),
+            tool_path(name = "cpp", path = "${toolchain_cpp}"),
+            tool_path(name = "gcc", path = "${toolchain_gcc}"),
+            tool_path(name = "g++", path = "${toolchain_gxx}"),
+            tool_path(name = "ld", path = "${toolchain_ld}"),
+            tool_path(name = "nm", path = "${toolchain_nm}"),
+            tool_path(name = "objcopy", path = "${toolchain_objcopy}"),
+            tool_path(name = "objdump", path = "${toolchain_objdump}"),
+            tool_path(name = "strip", path = "${toolchain_strip}"),
+            tool_path(name = "gcov", path = "${toolchain_gcov}"),
+        ],
+    )
+
+buildroot_cc_toolchain_config = rule(
+    implementation = _buildroot_cc_toolchain_config_impl,
+    attrs = {},
+)
+EOF
+
+    cat > "${toolchain_pkg_dir}/BUILD.bazel" <<EOF
+load(":cc_toolchain_config.bzl", "buildroot_cc_toolchain_config")
+
+package(default_visibility = ["//visibility:public"])
+
+filegroup(name = "empty")
+
+buildroot_cc_toolchain_config(name = "buildroot_config")
+
+cc_toolchain(
+    name = "buildroot_cc",
+    all_files = ":empty",
+    compiler_files = ":empty",
+    dwp_files = ":empty",
+    linker_files = ":empty",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 1,
+    toolchain_config = ":buildroot_config",
+)
 
 platform(
-    name = "${platform_name}",
+    name = "linux_${BAZEL_CPU}",
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:${BAZEL_CPU}",
     ],
 )
-EOF
-    fi
-
-    if ! grep -q "name = \"${toolchain_name}\"" "${build_file}"; then
-        cat >> "${build_file}" <<EOF
 
 toolchain(
-    name = "${toolchain_name}",
-    toolchain = "@local_config_cc//:cc-compiler-k8",
+    name = "buildroot_cc_linux_${BAZEL_CPU}",
+    toolchain = ":buildroot_cc",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     exec_compatible_with = [
         "@platforms//os:linux",
@@ -284,7 +381,6 @@ toolchain(
     ],
 )
 EOF
-    fi
 }
 
 prepare_dictionary() {
@@ -372,7 +468,7 @@ PY
 }
 
 prepare_dictionary
-prepare_target_platform
+prepare_target_toolchain
 
 if [[ "${MOZC_ALLOW_ROOT_SERVER}" == "1" ]]; then
     run_level_cc="${src_dir}/base/run_level.cc"
@@ -588,22 +684,11 @@ build_args=(
     "--config=oss_linux"
     "--config=release_build"
     "--cpu=${BAZEL_CPU}"
-    "--platforms=//:linux_${BAZEL_CPU}"
-    "--extra_toolchains=//:local_config_cc_linux_${BAZEL_CPU}"
+    "--platforms=//scarlet_buildroot_cc:linux_${BAZEL_CPU}"
+    "--extra_toolchains=//scarlet_buildroot_cc:buildroot_cc_linux_${BAZEL_CPU}"
+    "--host_platform=@local_config_platform//:host"
     "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
-    "--repo_env=CC=${toolchain_gcc}"
-    "--repo_env=CXX=${toolchain_gxx}"
-    "--action_env=CC=${toolchain_gcc}"
-    "--action_env=CXX=${toolchain_gxx}"
-    "--action_env=AR=${toolchain_ar}"
-    "--action_env=STRIP=${toolchain_strip}"
-    "--copt=--sysroot=${toolchain_sysroot}"
-    "--cxxopt=--sysroot=${toolchain_sysroot}"
-    "--linkopt=--sysroot=${toolchain_sysroot}"
-    "--linkopt=-Wl,-rpath-link,${toolchain_sysroot}/usr/lib"
-    "--linkopt=-Wl,-rpath-link,${toolchain_sysroot}/lib"
-    "--linkopt=-lfts"
 )
 
 if [[ -n "${MOZC_BAZEL_EXTRA_ARGS:-}" ]]; then

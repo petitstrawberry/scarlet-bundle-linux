@@ -14,16 +14,34 @@ assert_contains() {
 }
 
 bash -n "${BUILD_SCRIPT}"
-assert_contains 'local platform_name="linux_${BAZEL_CPU}"'
-assert_contains 'name = "${toolchain_name}"'
-assert_contains 'toolchain = "@local_config_cc//:cc-compiler-k8"'
+assert_contains 'cat > "${toolchain_pkg_dir}/cc_toolchain_config.bzl"'
+assert_contains 'cc_common.create_cc_toolchain_config_info('
+assert_contains 'load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")'
+assert_contains 'enabled = True'
+assert_contains 'tool_path(name = "gcov", path = "${toolchain_gcov}")'
+assert_contains 'toolchain = ":buildroot_cc"'
 assert_contains 'toolchain_type = "@bazel_tools//tools/cpp:toolchain_type"'
 assert_contains '"@platforms//cpu:x86_64"'
 assert_contains '"@platforms//cpu:${BAZEL_CPU}"'
-assert_contains '"--platforms=//:linux_${BAZEL_CPU}"'
-assert_contains '"--extra_toolchains=//:local_config_cc_linux_${BAZEL_CPU}"'
+assert_contains '"--platforms=//scarlet_buildroot_cc:linux_${BAZEL_CPU}"'
+assert_contains '"--extra_toolchains=//scarlet_buildroot_cc:buildroot_cc_linux_${BAZEL_CPU}"'
+assert_contains '"--host_platform=@local_config_platform//:host"'
 assert_contains '"--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"'
 assert_contains '"--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"'
+
+for forbidden in \
+    'toolchain = "@local_config_cc//:cc-compiler-k8"' \
+    '"--repo_env=CC=${toolchain_gcc}"' \
+    '"--repo_env=CXX=${toolchain_gxx}"' \
+    '"--action_env=CC=${toolchain_gcc}"' \
+    '"--action_env=CXX=${toolchain_gxx}"' \
+    '"--copt=--sysroot=${toolchain_sysroot}"' \
+    '"--linkopt=-lfts"'; do
+    if grep -Fq -- "${forbidden}" "${BUILD_SCRIPT}"; then
+        echo "Forbidden global target toolchain setting remains: ${forbidden}" >&2
+        exit 1
+    fi
+done
 
 if grep -Fq -- '"--crosstool_top=@local_config_cc//:toolchain"' "${BUILD_SCRIPT}"; then
     echo "Legacy --crosstool_top configuration must not be used." >&2
