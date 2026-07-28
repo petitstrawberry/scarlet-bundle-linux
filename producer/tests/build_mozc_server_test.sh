@@ -16,7 +16,9 @@ assert_contains() {
 bash -n "${BUILD_SCRIPT}"
 assert_contains 'cat > "${toolchain_pkg_dir}/cc_toolchain_config.bzl"'
 assert_contains 'cc_common.create_cc_toolchain_config_info('
-assert_contains 'load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")'
+assert_contains 'load("@rules_cc//cc:action_names.bzl", "ACTION_NAMES")'
+assert_contains 'load("@rules_cc//cc/common:cc_common.bzl", "cc_common")'
+assert_contains 'load("@rules_cc//cc/toolchains:cc_toolchain_config_info.bzl", "CcToolchainConfigInfo")'
 assert_contains 'load("@rules_cc//cc:defs.bzl", "cc_toolchain")'
 assert_contains 'enabled = True'
 assert_contains 'tool_path(name = "gcov", path = "${toolchain_gcov}")'
