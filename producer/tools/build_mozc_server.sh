@@ -298,6 +298,8 @@ def _buildroot_cc_toolchain_config_impl(ctx):
                                 "-Wl,-rpath-link,${toolchain_sysroot}/usr/lib",
                                 "-Wl,-rpath-link,${toolchain_sysroot}/lib",
                                 "-lfts",
+                                "-lstdc++",
+                                "-lm",
                             ]),
                         ],
                     ),
@@ -692,6 +694,8 @@ build_args=(
     "--extra_toolchains=//scarlet_buildroot_cc:buildroot_cc_linux_${BAZEL_CPU}"
     "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
+    "--verbose_failures"
+    "--experimental_ui_max_stdouterr_bytes=10485760"
 )
 
 if [[ -n "${MOZC_BAZEL_EXTRA_ARGS:-}" ]]; then
