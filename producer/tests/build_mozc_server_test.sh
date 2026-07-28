@@ -22,6 +22,7 @@ assert_contains '"@platforms//cpu:x86_64"'
 assert_contains '"@platforms//cpu:${BAZEL_CPU}"'
 assert_contains '"--platforms=//:linux_${BAZEL_CPU}"'
 assert_contains '"--extra_toolchains=//:local_config_cc_linux_${BAZEL_CPU}"'
+assert_contains '"--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"'
 assert_contains '"--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"'
 
 if grep -Fq -- '"--crosstool_top=@local_config_cc//:toolchain"' "${BUILD_SCRIPT}"; then

@@ -590,6 +590,7 @@ build_args=(
     "--cpu=${BAZEL_CPU}"
     "--platforms=//:linux_${BAZEL_CPU}"
     "--extra_toolchains=//:local_config_cc_linux_${BAZEL_CPU}"
+    "--host_crosstool_top=@bazel_tools//tools/cpp:toolchain"
     "--repo_env=BAZEL_TARGET_CPU=${BAZEL_CPU}"
     "--repo_env=CC=${toolchain_gcc}"
     "--repo_env=CXX=${toolchain_gxx}"
