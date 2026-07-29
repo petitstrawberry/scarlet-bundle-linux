@@ -114,7 +114,7 @@ strip_components = 1
 to = "/system/linux-{arch}"
 ```
 
-The rootfs and Mozc hashes are populated from the draft `v0.1.0` release.
+The rootfs and Mozc hashes are populated from the published `v0.1.0` release.
 The apps-demo, kvmtool, and shv-guest manifests remain TODO until those
 bundles are included in a release.
 
