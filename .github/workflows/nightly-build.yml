@@ -231,3 +231,109 @@ jobs:
           path: |
             producer/mozc-${{ matrix.arch }}-nightly-*.tar.zst
             producer/nightly-mozc-manifest-${{ matrix.arch }}-nightly-*.txt
+
+  apps-demo:
+    name: Nightly apps-demo (${{ matrix.arch }})
+    needs: buildroot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - riscv64
+          - aarch64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install apps-demo prerequisites
+        run: |
+          required_packages=(gettext meson ninja-build pkg-config zstd)
+          missing_packages=()
+          for package in "${required_packages[@]}"; do
+            if ! dpkg-query --show --showformat='${db:Status-Status}' "${package}" 2>/dev/null | grep -qx installed; then
+              missing_packages+=("${package}")
+            fi
+          done
+          if ((${#missing_packages[@]})); then
+            sudo apt-get update
+            sudo apt-get install --yes "${missing_packages[@]}"
+          fi
+
+      - name: Restore user-programs work cache
+        uses: actions/cache/restore@v4
+        with:
+          path: producer/cache/work
+          key: nightly-apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-${{ hashFiles('producer/tools/build_user_programs.sh', 'producer/tools/package_apps_demo.sh') }}
+          restore-keys: |
+            nightly-apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-
+            nightly-apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-
+            apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-
+
+      - name: Download Buildroot host SDK
+        uses: actions/download-artifact@v4
+        with:
+          name: nightly-buildroot-sdk-${{ matrix.arch }}-${{ github.run_number }}
+          path: producer/cache/buildroot-${{ matrix.arch }}
+
+      - name: Extract Buildroot host SDK
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          buildroot_dir="producer/cache/buildroot-${ARCH}"
+          mkdir -p "${buildroot_dir}/output"
+          zstd --decompress --stdout "${buildroot_dir}/buildroot-sdk-${ARCH}.tar.zst" | \
+            tar -xf - -C "${buildroot_dir}/output"
+          test -x "${buildroot_dir}/output/host/bin/zstd"
+
+      - name: Build user programs
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          WORKDIR: ${{ github.workspace }}/producer/cache/work
+        run: bash producer/tools/build_user_programs.sh
+
+      - name: Package apps-demo
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
+        run: bash producer/tools/package_apps_demo.sh
+
+      - name: Materialize nightly apps-demo artifact
+        env:
+          ARCH: ${{ matrix.arch }}
+        working-directory: producer
+        run: |
+          nightly_id="nightly-$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+          cp "artifacts/apps-demo-${ARCH}.tar.zst" "apps-demo-${ARCH}-${nightly_id}.tar.zst"
+          apps_demo_hash="$(sha256sum "apps-demo-${ARCH}-${nightly_id}.tar.zst" | cut -d' ' -f1)"
+          {
+            printf 'nightly_id=%s\n' "${nightly_id}"
+            printf 'arch=%s\n' "${ARCH}"
+            printf 'commit=%s\n' "${GITHUB_SHA}"
+            printf 'run=https://github.com/%s/actions/runs/%s\n' "${GITHUB_REPOSITORY}" "${GITHUB_RUN_ID}"
+            printf 'apps_demo_sha256=%s\n' "${apps_demo_hash}"
+          } > "nightly-apps-demo-manifest-${ARCH}-${nightly_id}.txt"
+
+      - name: Upload nightly apps-demo artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-apps-demo-${{ matrix.arch }}-${{ github.run_number }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            producer/apps-demo-${{ matrix.arch }}-nightly-*.tar.zst
+            producer/nightly-apps-demo-manifest-${{ matrix.arch }}-nightly-*.txt
+
+      - name: Save user-programs work cache
+        uses: actions/cache/save@v4
+        with:
+          path: producer/cache/work
+          key: nightly-apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-${{ hashFiles('producer/tools/build_user_programs.sh', 'producer/tools/package_apps_demo.sh') }}

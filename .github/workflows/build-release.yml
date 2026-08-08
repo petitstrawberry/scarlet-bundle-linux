@@ -273,11 +273,135 @@ jobs:
             producer/mozc-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
             producer/manifest-mozc-${{ matrix.arch }}.toml
 
+  apps-demo:
+    name: Build apps-demo (${{ matrix.arch }})
+    needs: buildroot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - riscv64
+          - aarch64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install apps-demo prerequisites
+        run: |
+          required_packages=(
+            gettext
+            meson
+            ninja-build
+            pkg-config
+            zstd
+          )
+          missing_packages=()
+          for package in "${required_packages[@]}"; do
+            if ! dpkg-query --show --showformat='${db:Status-Status}' "${package}" 2>/dev/null | grep -qx installed; then
+              missing_packages+=("${package}")
+            fi
+          done
+          if ((${#missing_packages[@]} == 0)); then
+            echo "apps-demo prerequisites are already installed."
+          else
+            sudo apt-get update
+            sudo apt-get install --yes "${missing_packages[@]}"
+          fi
+
+      - name: Restore user-programs work cache
+        uses: actions/cache/restore@v4
+        with:
+          path: producer/cache/work
+          key: apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-${{ hashFiles('producer/tools/build_user_programs.sh', 'producer/tools/package_apps_demo.sh') }}
+          restore-keys: |
+            apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-
+            apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-
+
+      - name: Download Buildroot host SDK
+        uses: actions/download-artifact@v4
+        with:
+          name: buildroot-sdk-${{ matrix.arch }}
+          path: producer/cache/buildroot-${{ matrix.arch }}
+
+      - name: Extract Buildroot host SDK
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          buildroot_dir="producer/cache/buildroot-${ARCH}"
+          mkdir -p "${buildroot_dir}/output"
+          zstd --decompress --stdout "${buildroot_dir}/buildroot-sdk-${ARCH}.tar.zst" | \
+            tar -xf - -C "${buildroot_dir}/output"
+          test -x "${buildroot_dir}/output/host/bin/zstd"
+
+      - name: Build user programs
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          WORKDIR: ${{ github.workspace }}/producer/cache/work
+        run: bash producer/tools/build_user_programs.sh
+
+      - name: Package apps-demo
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILDROOT_DIR: ${{ github.workspace }}/producer/cache/buildroot-${{ matrix.arch }}
+          PREBUILT_DIR: ${{ github.workspace }}/producer/prebuilt
+          ARTIFACT_DIR: ${{ github.workspace }}/producer/artifacts
+        run: bash producer/tools/package_apps_demo.sh
+
+      - name: Materialize versioned apps-demo artifact
+        working-directory: producer
+        run: |
+          cp "artifacts/apps-demo-${{ matrix.arch }}.tar.zst" \
+            "apps-demo-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+
+      - name: Compute apps-demo manifest hash
+        id: artifact
+        working-directory: producer
+        run: |
+          artifact_hash="$(../scripts/compute-artifact-hash.sh \
+            "apps-demo-${{ matrix.arch }}-${{ inputs.version }}.tar.zst")"
+          printf 'sha256=%s\n' "${artifact_hash}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate apps-demo manifest fragment
+        working-directory: producer
+        run: |
+          cat > "manifest-apps-demo-${{ matrix.arch }}.toml" <<EOF
+          [[layers]]
+          kind = "archive"
+          url = "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}/apps-demo-${{ matrix.arch }}-${{ inputs.version }}.tar.zst"
+          sha256 = "${{ steps.artifact.outputs.sha256 }}"
+          format = "tar-zst"
+          strip_components = 1
+          to = "/system/linux-${{ matrix.arch }}"
+          EOF
+
+      - name: Upload apps-demo release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apps-demo-${{ matrix.arch }}
+          if-no-files-found: error
+          path: |
+            producer/apps-demo-${{ matrix.arch }}-${{ inputs.version }}.tar.zst
+            producer/manifest-apps-demo-${{ matrix.arch }}.toml
+
+      - name: Save user-programs work cache
+        uses: actions/cache/save@v4
+        with:
+          path: producer/cache/work
+          key: apps-demo-work-${{ runner.os }}-${{ matrix.arch }}-v1-${{ hashFiles('producer/tools/build_user_programs.sh', 'producer/tools/package_apps_demo.sh') }}
+
   release:
     name: Create draft release
     needs:
       - buildroot
       - mozc
+      - apps-demo
     if: success() && inputs.publish
     runs-on: ubuntu-24.04
     permissions:

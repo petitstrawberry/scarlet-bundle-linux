@@ -66,6 +66,7 @@ scarlet-bundle-linux/
 │   │   ├── build_buildroot.sh       # direct Linux Buildroot driver
 │   │   ├── prepare.sh               # orchestrator
 │   │   ├── build_user_programs.sh   # zathura / green / fbdoom
+│   │   ├── package_apps_demo.sh     # versioned apps-demo archive
 │   │   ├── build_mozc_server.sh
 │   │   ├── build_kvmtool.sh         # riscv64 only
 │   │   ├── build_guest_image.sh
@@ -86,7 +87,7 @@ scarlet-bundle-linux/
 | Bundle | Artifact | Updates when |
 |---|---|---|
 | `rootfs` | Buildroot minimal rootfs + config | Buildroot bump, base package set change |
-| `apps-demo` | zathura / green / fbdoom binaries | demo app upstream change |
+| `apps-demo` | zathura / green / fbdoom / kvmtool binaries | demo app upstream change |
 | `mozc` | Mozc server + dictionary | Mozc upstream change |
 | `kvmtool` | kvmtool (riscv64 only) | kvmtool upstream change |
 | `shv-guest` | guest kernel + initramfs for nested virt | guest kernel bump or rootfs refresh |
@@ -115,30 +116,41 @@ to = "/system/linux-{arch}"
 ```
 
 The rootfs and Mozc hashes are populated from the published `v0.1.0` release.
-The apps-demo, kvmtool, and shv-guest manifests remain TODO until those
-bundles are included in a release.
+Starting with `v0.2.0`, the release workflow also builds and attaches the
+`apps-demo` archive (zathura, green, fbdoom, and the kvmtool binary) for both
+architectures; its hashes are TODO until that release is cut and are then
+filled from the generated `manifest-apps-demo-<arch>.toml` fragments. The
+`kvmtool` and `shv-guest` manifests remain TODO; the kvmtool binary currently
+ships inside the `apps-demo` archive.
+
+Scarlet's `bundles/linux/bundle.toml` pins this repository at a revision and
+consumes `bundles/rootfs` and `bundles/mozc`; once the apps-demo hashes above
+are pinned, add `subdir = "bundles/apps-demo"` there as well so clean Scarlet
+images receive the demo programs.
 
 ## Cutting a release
 
 1. Open the **Build release** workflow and run it with a version such as
-   `v0.1.0`. It builds both architectures directly on Ubuntu 24.04, restores a
+   `v0.2.0`. It builds both architectures directly on Ubuntu 24.04, restores a
    per-architecture Buildroot download cache, and verifies the official
    Buildroot source tarball before each extraction.
 2. Leave `publish` disabled for build-only validation. The workflow still
-   builds and uploads each versioned rootfs, legal-info, and pinned Mozc archive plus
-   the `manifest-<arch>.toml` fragment. Enable `publish` only to attach all of
-   those files to a draft GitHub Release.
-3. Each manifest contains the rootfs release URL and its `sha256:<hex>` value.
-   Use it to replace the matching TODO in `bundles/rootfs/bundle.toml` as a
-   separate release update.
+   builds and uploads each versioned rootfs, legal-info, apps-demo, and pinned
+   Mozc archive plus the `manifest-<arch>.toml` and
+   `manifest-apps-demo-<arch>.toml` fragments. Enable `publish` only to attach
+   all of those files to a draft GitHub Release.
+3. Each manifest contains the release URL and its `sha256:<hex>` value. Use
+   them to replace the matching TODO in `bundles/rootfs/bundle.toml` and
+   `bundles/apps-demo/bundle.toml` as a separate release update.
 
 ## Nightly validation
 
 The **Nightly Buildroot validation** workflow runs daily at 03:15 UTC and can
 also be started manually. It builds both architectures directly on Ubuntu
 24.04, but does not create a GitHub Release or modify the stable bundle
-manifests. The rootfs, legal-info, and build metadata are uploaded as Actions
-artifacts for 14 days. Stable releases remain an explicit manual operation.
+manifests. The rootfs, legal-info, apps-demo, Mozc, and build metadata are
+uploaded as Actions artifacts for 14 days. Stable releases remain an explicit
+manual operation.
 
 For a local build, use the Linux commands above. Use
 `scripts/compute-artifact-hash.sh <file>` to format any artifact hash for a

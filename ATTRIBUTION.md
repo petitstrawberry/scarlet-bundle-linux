@@ -28,14 +28,15 @@ GitHub Releases:
 
 - `rootfs-<arch>-vX.Y.Z.tar.zst` - Buildroot rootfs + config overlay
 - `legal-info-<arch>-vX.Y.Z.tar.zst` - Buildroot source, patches, licenses, notices, and configuration
-- `apps-demo-<arch>-vX.Y.Z.tar.zst` - optional demo programs
+- `apps-demo-<arch>-vX.Y.Z.tar.zst` - optional demo programs (`zathura`,
+  `green`, `fbdoom`, `lkvm`)
 - `mozc-<arch>-vX.Y.Z.tar.zst` - Mozc server assets
 - `kvmtool-<arch>-vX.Y.Z.tar.zst` - kvmtool (riscv64 only)
 - `shv-guest-<arch>-vX.Y.Z.tar.zst` - SHV guest kernel + initramfs
 
-Nightly validation builds include rootfs, legal-info, and Mozc archives as
-temporary GitHub Actions artifacts; they are not stable bundle inputs and do
-not update the release manifests.
+Nightly validation builds include rootfs, legal-info, apps-demo, and Mozc
+archives as temporary GitHub Actions artifacts; they are not stable bundle
+inputs and do not update the release manifests.
 
 Redistributable status is reviewed before each stable release. Assets
 whose license status cannot be verified (firmware blobs, vendor
