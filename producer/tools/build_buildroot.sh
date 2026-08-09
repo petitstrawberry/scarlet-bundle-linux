@@ -218,6 +218,13 @@ configure_buildroot() {
     assert_config_option "BR2_PACKAGE_HOST_ZSTD=y"
 }
 
+# The output cache can outlive the separate download cache. Prefetching all
+# configured sources keeps cached builds usable by both the build and legal-info.
+prefetch_buildroot_sources() {
+    echo "==> Prefetching Buildroot package sources..."
+    buildroot_make "-j${MAKE_JOBS}" source
+}
+
 archive_release_outputs() {
     local rootfs_tar="${OUTPUT_DIR}/images/rootfs.tar"
     local staged_rootfs="${PREBUILT_DIR}/${ARCH}/rootfs.tar"
@@ -278,6 +285,7 @@ if [[ "${BUILDROOT_BUILD_MODE}" == "configure" ]]; then
     exit 0
 fi
 
+prefetch_buildroot_sources
 echo "==> Building Buildroot rootfs for ${ARCH}..."
 buildroot_make "-j${MAKE_JOBS}"
 archive_release_outputs
