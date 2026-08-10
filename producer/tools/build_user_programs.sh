@@ -105,7 +105,7 @@ if [[ ! -f "${meson_cross_file}" ]]; then
     exit 1
 fi
 
-mkdir -p "${PREBUILT_DIR}/${ARCH}/bin" "${PREBUILT_DIR}/${ARCH}/lib" "${PREBUILT_DIR}/${ARCH}/share"
+mkdir -p "${WORKDIR}" "${PREBUILT_DIR}/${ARCH}/bin" "${PREBUILT_DIR}/${ARCH}/lib" "${PREBUILT_DIR}/${ARCH}/share"
 export PATH="${toolchain_bindir}:${PATH}"
 export PKG_CONFIG="${buildroot_pkg_config}"
 
