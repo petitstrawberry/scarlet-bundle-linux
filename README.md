@@ -54,6 +54,13 @@ with normalized GNU tar metadata.
 GPL-2.0-only. See [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md) for
 the per-package license tracking policy.
 
+## Game test recipes
+
+The [SuperTuxKart 1.5 Scarlet recipe](producer/recipes/supertuxkart/README.md)
+records a private Linux ABI/Vulkan test using unmodified Alpine game packages.
+It is not part of the published rootfs or apps-demo artifacts and contains no
+game binaries or assets.
+
 ## Repository layout
 
 ```
