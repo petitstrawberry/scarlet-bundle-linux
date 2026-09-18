@@ -7,7 +7,7 @@ steps. No game binary or assets are committed to this repository.
 
 The runtime path is STK → the distribution's Khronos `libvulkan.so.1` → the
 normal ICD manifest → `libvulkan_sgfx.so` → Scarlet VirGL. The separate
-[SDL2 SWS port](https://github.com/petitstrawberry/scarlet-sdl2-sws)
+[SDL2 SWS port](https://github.com/petitstrawberry/sdl2-sws)
 provides the fullscreen window and input through `VK_KHR_display`. SGFX and
 the SWS C client come from [Scarlet's Vulkan setup](https://github.com/petitstrawberry/Scarlet/blob/feature/vulkan/docs/graphics/vulkan-games.md).
 
@@ -37,7 +37,7 @@ SDL2 2.32.10 from the separate SWS port, passing those C client artifacts:
 
 ```sh
 export SWS_LIB_DIR=/path/to/directory/containing/libsws_client_c.so
-export SDL_SWS_REPO=/path/to/scarlet-sdl2-sws
+export SDL_SWS_REPO=/path/to/sdl2-sws
 export SCARLET_REPO=/path/to/Scarlet
 docker run --rm --platform linux/arm64 \
   -v "$SCARLET_REPO:/scarlet:ro" -v "$STK_WORK:/work" \
